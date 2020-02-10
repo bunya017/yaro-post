@@ -11,6 +11,9 @@
       <div class="col-7 q-px-md">
         <q-input outlined v-model="requestURL" label="Request URL" />
       </div>
+      <div class="col-2">
+        <q-btn color="primary" size='lg' icon-right="send" label="Send" />
+      </div>
     </div>
   </q-page>
 </template>
