@@ -1,18 +1,24 @@
 <template>
   <q-page padding>
-    <div class="row q-pa-md">
-      <div class="col-3" style="min-width: 250px">
-        <q-select
-          outlined v-model="requestType"
-          :options="options"
-          label="Request Type"
-        />
-      </div>
-      <div class="col-7 q-px-md">
-        <q-input outlined v-model="requestURL" label="Request URL" />
-      </div>
-      <div class="col-2">
-        <q-btn color="primary" size='lg' icon-right="send" label="Send" />
+    <div class="bg-grey-3 rounded-borders">
+      <!-- Request Section-->
+      <div class="text-h6 q-px-md q-pt-md">Request</div>
+      <div class="row q-pa-md">
+        <div class="col-3">
+          <q-select
+            dense
+            outlined
+            label="Type"
+            :options="options"
+            v-model="requestType"
+          />
+        </div>
+        <div class="col-8 q-px-md">
+          <q-input dense outlined v-model="requestURL" label="URL" />
+        </div>
+        <div class="col-1">
+          <q-btn color="primary" label="Send" />
+        </div>
       </div>
     </div>
   </q-page>
