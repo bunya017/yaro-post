@@ -21,6 +21,10 @@
         </div>
       </div>
     </div>
+    <div class="bg-grey-3 q-mt-md rounded-borders">
+      <!-- Request Body Section-->
+      <div class="text-h6 q-px-md q-pt-md">Request Body</div>
+    </div>
   </q-page>
 </template>
 
