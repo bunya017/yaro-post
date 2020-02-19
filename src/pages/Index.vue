@@ -29,7 +29,10 @@ export default {
   name: 'Home',
   data () {
     return {
-      requestType: null,
+      requestType: {
+        label: 'GET',
+        value: 'get'
+      },
       requestURL: 'https://',
       options: [
         {
