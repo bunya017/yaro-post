@@ -42,10 +42,18 @@
           <q-btn color="grey" label="Add new parameter">
             <q-menu fit>
               <q-list>
-                <q-item clickable @click="addParameter({ index: 1, type: 'text' })" v-close-popup>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="addParameter({ index: parameters.length + 1, type: 'text' })"
+                >
                   <q-item-section>Text</q-item-section>
                 </q-item>
-                <q-item clickable @click="addParameter({ index: 1, type: 'file' })" v-close-popup>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="addParameter({ index: parameters.length + 1, type: 'file' })"
+                >
                   <q-item-section>File</q-item-section>
                 </q-item>
               </q-list>
@@ -93,8 +101,8 @@ export default {
     }
   },
   methods: {
-    addParameter (type) {
-      this.parameters.push(type)
+    addParameter (payload) {
+      this.parameters.push(payload)
     }
   }
 }
