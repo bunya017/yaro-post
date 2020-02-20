@@ -31,10 +31,14 @@
         <div class="col-5">
           <q-input dense outlined :type="field.type" placeholder="value" />
         </div>
+        <div class="col-1">
+          <!-- Remove parameter button -->
+          <q-btn color="grey" icon="delete" />
+        </div>
       </div>
       <div class="row q-pa-md">
         <div class="col-3 q-mx-auto">
-          <!-- New parameter button-->
+          <!-- New parameter button -->
           <q-btn color="grey" label="Add new parameter">
             <q-menu fit>
               <q-list>
