@@ -33,13 +33,18 @@
         </div>
         <div class="col-1">
           <!-- Remove parameter button -->
-          <q-btn color="grey" icon="delete" />
+          <q-btn
+            dense
+            color="grey"
+            icon="delete"
+            @click="removeParameter(field.index)"
+          />
         </div>
       </div>
       <div class="row q-pa-md">
         <div class="col-3 q-mx-auto">
           <!-- New parameter button -->
-          <q-btn color="grey" label="Add new parameter">
+          <q-btn color="grey" icon="add" label="Add new parameter">
             <q-menu fit>
               <q-list>
                 <q-item
@@ -103,6 +108,9 @@ export default {
   methods: {
     addParameter (payload) {
       this.parameters.push(payload)
+    },
+    removeParameter (index) {
+      this.parameters = this.parameters.filter(parameter => parameter.index !== index)
     }
   }
 }
