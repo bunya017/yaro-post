@@ -24,6 +24,23 @@
     <div class="bg-grey-3 q-mt-md rounded-borders">
       <!-- Request Body Section-->
       <div class="text-h6 q-px-md q-pt-md">Request Body</div>
+      <div class="row q-pa-md">
+        <div class="col-3 q-mx-auto">
+          <!-- New parameter button-->
+          <q-btn color="grey" label="Add new parameter">
+            <q-menu fit>
+              <q-list>
+                <q-item clickable v-close-popup>
+                  <q-item-section>Text</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section>File</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </div>
+      </div>
     </div>
   </q-page>
 </template>
