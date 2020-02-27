@@ -26,10 +26,10 @@
       <div class="text-h6 q-px-md q-pt-md">Request Body</div>
       <div class="row q-pa-md q-gutter-md" v-for="field in parameters" :key="field.index">
         <div class="col-5">
-          <q-input dense v-model="$data[requestParams['parameter' + field.index].name]" outlined type="text" placeholder="parameter name" />
+          <q-input dense outlined type="text" placeholder="parameter name" />
         </div>
         <div class="col-5">
-          <q-input dense v-model="$data[requestParams['parameter' + field.index].value]" outlined :type="field.type" placeholder="value" />
+          <q-input dense outlined :type="field.type" placeholder="value" />
         </div>
         <div class="col-1">
           <!-- Remove parameter button -->
@@ -102,20 +102,21 @@ export default {
           value: 'patch'
         }
       ],
-      parameters: [],
-      requestParams: {}
+      parameters: []
     }
   },
   methods: {
     addParameter (payload) {
-      this.requestParams['parameter' + payload.index] = {
-        name: '',
-        value: ''
-      }
       this.parameters.push(payload)
+      this.$store.dispatch('request/addRequestParameterAction')
     },
     removeParameter (index) {
       this.parameters = this.parameters.filter(parameter => parameter.index !== index)
+    }
+  },
+  computed: {
+    requestParams () {
+      return this.$store.request.requestParams
     }
   }
 }
