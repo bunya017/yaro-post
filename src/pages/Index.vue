@@ -74,7 +74,7 @@
       <div class="row q-pa-md">
         <div class="col-3 q-mx-auto">
           <!-- New parameter button -->
-          <q-btn color="grey" icon="add" label="Add new parameter">
+          <q-btn color="grey" icon="add" label="New parameter">
             <q-menu fit>
               <q-list>
                 <q-item
