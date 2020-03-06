@@ -9,3 +9,15 @@ export function addRequestParameter (state) {
     index: paramCount
   })
 }
+
+export function setRequestParameter (state, payload) {
+  let param = state.requestParams['parameter' + payload.index]
+  switch (payload.field) {
+    case 'name':
+      param.name = payload.param
+      break
+    case 'value':
+      param.value = payload.param
+      break
+  }
+}
