@@ -1,5 +1,5 @@
-export function addRequestParameterAction ({ commit }) {
-  commit('addRequestParameter')
+export function addRequestParameterAction ({ commit }, type) {
+  commit('addRequestParameter', type)
 }
 
 export function setRequestParameterAction ({ commit }, payload) {
