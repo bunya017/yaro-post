@@ -34,7 +34,6 @@
             dense
             outlined
             type="text"
-            :value="requestParams['parameter' + field.index].name"
             placeholder="parameter name"
             @change="
               $store.commit('request/setRequestParameter', {
@@ -43,6 +42,7 @@
                 param: $event.target.value
               })
             "
+            :value="requestParams['parameter' + field.index].name"
           />
         </div>
         <div class="col-5">
@@ -51,6 +51,14 @@
             outlined
             :type="field.type"
             placeholder="value"
+            @change="
+              $store.commit('request/setRequestParameter', {
+                field: 'value',
+                index: field.index,
+                param: $event.target.value
+              })
+            "
+            :value="requestParams['parameter' + field.index].value"
           />
         </div>
         <div class="col-1">
