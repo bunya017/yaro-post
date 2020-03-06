@@ -24,20 +24,25 @@
     <div class="bg-grey-3 q-mt-md rounded-borders">
       <!-- Request Body Section-->
       <div class="text-h6 q-px-md q-pt-md">Request Body</div>
-      <div class="row q-pa-md q-gutter-md" v-for="field in parameters" :key="field.index">
+      <div
+        :key="field.index"
+        v-for="field in requestParams"
+        class="row q-pa-md q-gutter-md"
+      >
         <div class="col-5">
           <q-input
             dense
             outlined
             type="text"
+            :value="requestParams['parameter' + field.index].name"
+            placeholder="parameter name"
             @change="
               $store.commit('request/setRequestParameter', {
-                index: field.index,
                 field: 'name',
+                index: field.index,
                 param: $event.target.value
               })
             "
-            placeholder="parameter name"
           />
         </div>
         <div class="col-5">
@@ -118,9 +123,9 @@ export default {
     }
   },
   methods: {
-    addParameter (payload) {
+    addParameter (payload, type) {
       this.parameters.push(payload)
-      this.$store.dispatch('request/addRequestParameterAction')
+      this.$store.dispatch('request/addRequestParameterAction', payload.type)
     },
     removeParameter (index) {
       this.parameters = this.parameters.filter(parameter => parameter.index !== index)
