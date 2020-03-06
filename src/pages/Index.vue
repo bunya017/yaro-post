@@ -46,7 +46,12 @@
           />
         </div>
         <div class="col-5">
-          <q-input dense outlined :type="field.type" placeholder="value" />
+          <q-input
+            dense
+            outlined
+            :type="field.type"
+            placeholder="value"
+          />
         </div>
         <div class="col-1">
           <!-- Remove parameter button -->
@@ -128,7 +133,7 @@ export default {
       this.$store.dispatch('request/addRequestParameterAction', payload.type)
     },
     removeParameter (index) {
-      this.parameters = this.parameters.filter(parameter => parameter.index !== index)
+      this.$store.dispatch('request/removeRequestParameterAction', index)
     }
   },
   computed: {
