@@ -30,6 +30,13 @@
             dense
             outlined
             type="text"
+            @change="
+              $store.commit('request/setRequestParameter', {
+                index: field.index,
+                field: 'name',
+                param: $event.target.value
+              })
+            "
             placeholder="parameter name"
           />
         </div>
