@@ -26,7 +26,12 @@
       <div class="text-h6 q-px-md q-pt-md">Request Body</div>
       <div class="row q-pa-md q-gutter-md" v-for="field in parameters" :key="field.index">
         <div class="col-5">
-          <q-input dense outlined type="text" placeholder="parameter name" />
+          <q-input
+            dense
+            outlined
+            type="text"
+            placeholder="parameter name"
+          />
         </div>
         <div class="col-5">
           <q-input dense outlined :type="field.type" placeholder="value" />
@@ -115,8 +120,10 @@ export default {
     }
   },
   computed: {
-    requestParams () {
-      return this.$store.request.requestParams
+    requestParams: {
+      get () {
+        return this.$store.state.request.requestParams
+      }
     }
   }
 }
