@@ -5,3 +5,7 @@ export function addRequestParameterAction ({ commit }) {
 export function setRequestParameterAction ({ commit }, payload) {
   commit('setRequestParameter', payload)
 }
+
+export function removeRequestParameterAction ({ commit }, index) {
+  commit('removeRequestParameter', index)
+}
