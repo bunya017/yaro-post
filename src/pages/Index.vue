@@ -8,16 +8,16 @@
           <q-select
             dense
             outlined
-            label="Type"
+            label="Method"
             :options="options"
-            v-model="requestType"
+            v-model="requestMethod"
           />
         </div>
         <div class="col-8 q-px-md">
           <q-input dense outlined v-model="requestURL" label="URL" />
         </div>
         <div class="col-1">
-          <q-btn color="primary" label="Send" />
+          <q-btn color="primary" label="Send" @click="sendRequest" />
         </div>
       </div>
     </div>
@@ -105,7 +105,7 @@ export default {
   name: 'Home',
   data () {
     return {
-      requestType: {
+      requestMethod: {
         label: 'GET',
         value: 'get'
       },
@@ -132,7 +132,8 @@ export default {
           value: 'patch'
         }
       ],
-      parameters: []
+      parameters: [],
+      requestResponse: {}
     }
   },
   methods: {
@@ -142,6 +143,22 @@ export default {
     },
     removeParameter (index) {
       this.$store.dispatch('request/removeRequestParameterAction', index)
+    },
+    sendRequest () {
+      let self = this
+      self.$axios({
+        method: self.requestMethod.value,
+        url: self.requestURL,
+        data: self.requestPayload ? self.requestPayload : {}
+      })
+        .then(function (response) {
+          self.requestResponse['rawResponse'] = response
+          self.requestResponse['responseData'] = JSON.stringify(response.data, null, 2)
+        })
+        .catch(function (error) {
+          self.requestResponse['rawResponse'] = error.response
+          self.requestResponse['responseData'] = JSON.stringify(error.response.data, null, 2)
+        })
     }
   },
   computed: {
