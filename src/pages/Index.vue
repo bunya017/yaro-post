@@ -145,10 +145,16 @@ export default {
     }
   },
   computed: {
-    requestParams: {
-      get () {
-        return this.$store.state.request.requestParams
+    requestParams () {
+      return this.$store.state.request.requestParams
+    },
+    requestPayload () {
+      let payload = {}
+      let params = this.$store.state.request.requestParams
+      for (let param in params) {
+        payload[params[param].name] = params[param].value
       }
+      return payload
     }
   }
 }
