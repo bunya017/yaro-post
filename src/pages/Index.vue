@@ -100,6 +100,23 @@
         </div>
       </div>
     </div>
+    <!-- Response Section-->
+    <q-card class="q-mt-md" v-if="responseData">
+      <q-card-section>
+        <div class="text-h6">Response</div>
+      </q-card-section>
+      <q-separator />
+      <q-card-section>
+        <span class="text-h3 text-positive">
+          {{ rawResponse.status }}
+        </span> <span class="grey-8">{{ rawResponse.statusText }}</span>
+      </q-card-section>
+      <q-card-section style="overflow-x: scroll;">
+        <pre
+          class="bg-grey-2 rounded-borders q-pa-sm shadow-1"
+        ><code>{{ responseData }}</code></pre>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 
