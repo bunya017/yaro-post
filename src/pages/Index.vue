@@ -111,6 +111,21 @@
           {{ rawResponse.status }}
         </span> <span class="grey-8">{{ rawResponse.statusText }}</span>
       </q-card-section>
+      <!-- Response Headers-->
+      <q-card-section>
+        <q-expansion-item
+          v-model="headerExpanded"
+        >
+          <template v-slot:header>
+            <div class="text-h6">Headers</div>
+          </template>
+          <div class="bg-grey-2 rounded-borders q-pa-md">
+            <p v-for="(val, key, index) in rawResponse.headers" :key="index">
+              <b>{{ key }}</b>: {{ val }}
+            </p>
+          </div>
+        </q-expansion-item>
+      </q-card-section>
       <q-card-section style="overflow-x: scroll;">
         <pre
           class="bg-grey-2 rounded-borders q-pa-sm shadow-1"
@@ -152,7 +167,8 @@ export default {
           value: 'patch'
         }
       ],
-      parameters: []
+      parameters: [],
+      headerExpanded: false
     }
   },
   methods: {
