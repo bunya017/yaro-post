@@ -135,8 +135,7 @@ export default {
           value: 'patch'
         }
       ],
-      parameters: [],
-      requestResponse: {}
+      parameters: []
     }
   },
   methods: {
@@ -155,12 +154,10 @@ export default {
         data: self.requestPayload ? self.requestPayload : {}
       })
         .then(function (response) {
-          self.requestResponse['rawResponse'] = response
-          self.requestResponse['responseData'] = JSON.stringify(response.data, null, 2)
+          self.$store.dispatch('request/setRequestResponseAction', response)
         })
         .catch(function (error) {
-          self.requestResponse['rawResponse'] = error.response
-          self.requestResponse['responseData'] = JSON.stringify(error.response.data, null, 2)
+          self.$store.dispatch('request/setRequestResponseAction', error.response)
         })
     }
   },
@@ -175,6 +172,12 @@ export default {
         payload[params[param].name] = params[param].value
       }
       return payload
+    },
+    rawResponse () {
+      return this.$store.state.request.requestResponse
+    },
+    responseData () {
+      return JSON.stringify(this.rawResponse.data, null, 2)
     }
   }
 }
