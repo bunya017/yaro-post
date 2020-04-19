@@ -26,3 +26,7 @@ export function setRequestParameter (state, payload) {
 export function removeRequestParameter (state, index) {
   Vue.delete(state.requestParams, 'parameter' + index)
 }
+
+export function setRequestResponse (state, payload) {
+  state.requestResponse = payload
+}
