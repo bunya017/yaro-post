@@ -139,7 +139,22 @@
           </div>
         </q-expansion-item>
       </q-card-section>
-      <q-card-section class="q-py-sm">
+      <q-card-section class="q-py-sm" v-if="rawResponse.headers['content-type'] === 'text/html'">
+        <q-expansion-item
+          dense
+          class="q-pb-lg"
+          v-model="htmlExpanded"
+        >
+          <template v-slot:header>
+            <div class="text-h6 q-pl-none">Preview</div>
+          </template>
+          <span class="scroll" v-html="rawResponse.data"></span>
+        </q-expansion-item>
+        <pre
+          class="bg-grey-2 rounded-borders q-pa-sm scroll"
+        ><code>{{ rawResponse.data }}</code></pre>
+      </q-card-section>
+      <q-card-section class="q-py-sm" v-else>
         <pre
           class="bg-grey-2 rounded-borders q-pa-sm scroll"
         ><code>{{ responseData }}</code></pre>
@@ -182,7 +197,8 @@ export default {
       ],
       parameters: [],
       headerExpanded: false,
-      statusIsOk: null
+      statusIsOk: null,
+      htmlExpanded: false
     }
   },
   methods: {
