@@ -119,7 +119,7 @@
       </q-card-section>
       <q-separator />
       <q-card-section>
-        <span class="text-h3 text-positive">
+        <span :class="['text-h3', statusIsOk ? 'text-positive' : 'text-negative' ]">
           {{ rawResponse.status }}
         </span> <span class="grey-8">{{ rawResponse.statusText }}</span>
       </q-card-section>
@@ -181,7 +181,8 @@ export default {
         }
       ],
       parameters: [],
-      headerExpanded: false
+      headerExpanded: false,
+      statusIsOk: null
     }
   },
   methods: {
@@ -200,9 +201,11 @@ export default {
         data: self.requestPayload ? self.requestPayload : {}
       })
         .then(function (response) {
+          self.statusIsOk = true
           self.$store.dispatch('request/setRequestResponseAction', response)
         })
         .catch(function (error) {
+          self.statusIsOk = false
           self.$store.dispatch('request/setRequestResponseAction', error.response)
         })
     }
