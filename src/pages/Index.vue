@@ -134,7 +134,7 @@
           </template>
           <div class="bg-grey-2 rounded-borders q-pa-md">
             <p v-for="(val, key, index) in rawResponse.headers" :key="index">
-              <b>{{ key }}</b>: {{ val }}
+              <b class="text-capitalize">{{ key }}</b>: {{ val }}
             </p>
           </div>
         </q-expansion-item>
