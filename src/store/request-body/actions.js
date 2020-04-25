@@ -13,3 +13,7 @@ export function removeRequestParameterAction ({ commit }, index) {
 export function setRequestResponseAction ({ commit }, payload) {
   commit('setRequestResponse', payload)
 }
+
+export function setRequestMethodAction ({ commit }, payload) {
+  commit('setRequestMethod', payload)
+}
