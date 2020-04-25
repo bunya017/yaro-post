@@ -38,3 +38,7 @@ export function removeRequestParameter (state, index) {
 export function setRequestResponse (state, payload) {
   state.requestResponse = payload
 }
+
+export function setRequestMethod (state, payload) {
+  state.requestMethod = payload
+}
