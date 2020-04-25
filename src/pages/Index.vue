@@ -236,7 +236,6 @@ export default {
   name: 'Home',
   data () {
     return {
-      requestURL: 'https://',
       options: [
         {
           label: 'GET',
@@ -322,6 +321,14 @@ export default {
       },
       set (value) {
         this.$store.dispatch('request/setRequestMethodAction', value)
+      }
+    },
+    requestURL: {
+      get () {
+        return this.$store.state.request.requestURL
+      },
+      set (value) {
+        this.$store.dispatch('request/setRequestURLAction', value)
       }
     }
   }
