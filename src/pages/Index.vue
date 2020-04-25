@@ -58,11 +58,11 @@
               :value="requestParams['parameter' + field.index].name"
             />
           </div>
-          <div class="col-5">
+          <div class="col-5" v-if="field.type === 'text'">
             <q-input
               dense
               outlined
-              :type="field.type"
+              type="text"
               placeholder="value"
               @change="
                 $store.commit('request/setRequestParameter', {
@@ -74,6 +74,74 @@
               :value="requestParams['parameter' + field.index].value"
             />
           </div>
+          <q-uploader
+            multiple
+            class="col-5"
+            color="white"
+            text-color="grey-8"
+            :ref="'fileInput' + field.index"
+            v-if="field.type === 'file'"
+            @added="(files) => {
+              $store.commit('request/setRequestParameter', {
+                field: 'value',
+                index: field.index,
+                param: files
+              })
+            }"
+            @removed="(files) => {
+              if ($refs['fileInput' + field.index][0].files.length > 0) {
+                $store.commit('request/setRequestParameter', {
+                  field: 'value',
+                  index: field.index,
+                  param: $refs['fileInput' + field.index][0].files
+                })
+              } else {
+                $store.commit('request/setRequestParameter', {
+                  field: 'value',
+                  index: field.index,
+                  param: null
+                })
+              }
+            }"
+          >
+            <template v-slot:header="scope">
+              <div
+                class="row no-wrap items-center q-pa-sm q-gutter-xs"
+              >
+                <q-btn
+                  v-if="scope.queuedFiles.length > 0"
+                  icon="clear_all" @click="scope.removeQueuedFiles"
+                  round
+                  dense
+                  flat
+                />
+                <div class="col">
+                  <div class="q-uploader__title">
+                    Files
+                  </div>
+                  <div class="q-uploader__subtitle">
+                    Click the + button or drag and drop file(s)
+                  </div>
+                </div>
+                <q-btn v-if="scope.canAddFiles" icon="add_box" round dense flat>
+                  <q-uploader-add-trigger />
+                </q-btn>
+              </div>
+            </template>
+            <template v-slot:list="scope">
+              <div class="q-gutter-xs truncate-chip-labels">
+                <q-chip
+                  dense
+                  removable
+                  color="grey"
+                  text-color="white"
+                  :label="file.name"
+                  @remove="scope.removeFile(file)"
+                  v-for="file in scope.files" :key="file.name"
+                />
+              </div>
+            </template>
+          </q-uploader>
           <div class="col-1">
             <!-- Remove parameter button -->
             <q-btn
@@ -169,8 +237,8 @@ export default {
   data () {
     return {
       requestMethod: {
-        label: 'GET',
-        value: 'get'
+        label: 'POST',
+        value: 'post'
       },
       requestURL: 'https://',
       options: [
@@ -198,7 +266,8 @@ export default {
       parameters: [],
       headerExpanded: false,
       statusIsOk: null,
-      htmlExpanded: false
+      htmlExpanded: false,
+      file: null
     }
   },
   methods: {
@@ -224,6 +293,13 @@ export default {
           self.statusIsOk = false
           self.$store.dispatch('request/setRequestResponseAction', error.response)
         })
+    },
+    addFiles (files, index) {
+      this.$store.commit('request/setRequestParameter', {
+        field: 'value',
+        index: index,
+        param: files
+      })
     }
   },
   computed: {
