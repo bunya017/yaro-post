@@ -236,10 +236,6 @@ export default {
   name: 'Home',
   data () {
     return {
-      requestMethod: {
-        label: 'POST',
-        value: 'post'
-      },
       requestURL: 'https://',
       options: [
         {
@@ -319,6 +315,14 @@ export default {
     },
     responseData () {
       return JSON.stringify(this.rawResponse.data, null, 2)
+    },
+    requestMethod: {
+      get () {
+        return this.$store.state.request.requestMethod
+      },
+      set (value) {
+        this.$store.dispatch('request/setRequestMethodAction', value)
+      }
     }
   }
 }
