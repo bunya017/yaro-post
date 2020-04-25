@@ -1,6 +1,10 @@
 export default function () {
   return {
     requestParams: {},
-    requestResponse: {}
+    requestResponse: {},
+    requestMethod: {
+      label: 'GET',
+      value: 'get'
+    }
   }
 }
