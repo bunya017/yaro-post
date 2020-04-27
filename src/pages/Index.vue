@@ -261,8 +261,7 @@ export default {
       parameters: [],
       headerExpanded: false,
       statusIsOk: null,
-      htmlExpanded: false,
-      file: null
+      htmlExpanded: false
     }
   },
   methods: {
@@ -288,13 +287,6 @@ export default {
           self.statusIsOk = false
           self.$store.dispatch('request/setRequestResponseAction', error.response)
         })
-    },
-    addFiles (files, index) {
-      this.$store.commit('request/setRequestParameter', {
-        field: 'value',
-        index: index,
-        param: files
-      })
     }
   },
   computed: {
