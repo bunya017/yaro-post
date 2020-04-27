@@ -87,6 +87,7 @@
                 index: field.index,
                 param: files
               })
+              hasFile = true
             }"
             @removed="(files) => {
               if ($refs['fileInput' + field.index][0].files.length > 0) {
@@ -102,6 +103,7 @@
                   param: null
                 })
               }
+              hasFile = false
             }"
           >
             <template v-slot:header="scope">
@@ -261,7 +263,8 @@ export default {
       parameters: [],
       headerExpanded: false,
       statusIsOk: null,
-      htmlExpanded: false
+      htmlExpanded: false,
+      hasFile: false
     }
   },
   methods: {
@@ -274,10 +277,27 @@ export default {
     },
     sendRequest () {
       let self = this
+      let payload = null
+      let params = self.$store.state.request.requestParams
+      if (self.hasFile) {
+        payload = new FormData()
+        for (const param in params) {
+          if (params[param].type !== 'file') {
+            payload.append(params[param].name, params[param].value)
+          } else {
+            let files = params[param].value
+            for (var i = 0; i < files.length; i++) {
+              payload.append(params[param].name, files[i])
+            }
+          }
+        }
+      } else {
+        payload = self.requestPayload
+      }
       self.$axios({
-        method: self.requestMethod.value,
         url: self.requestURL,
-        data: self.requestPayload ? self.requestPayload : {}
+        method: self.requestMethod.value,
+        data: payload
       })
         .then(function (response) {
           self.statusIsOk = true
