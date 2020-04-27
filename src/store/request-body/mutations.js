@@ -1,8 +1,16 @@
 import Vue from 'vue'
 
 export function addRequestParameter (state, type) {
-  let paramCount = Object.keys(state.requestParams).length + 1
-  // Add 1 to paramCount so key turns out to be parameter1, parameter2 ...
+  let count = Object.keys(state.requestParams).length
+  let paramCount = 0
+
+  if (count > 0) {
+    let params = Object.keys(state.requestParams).sort()
+    paramCount = state.requestParams[params[params.length - 1]].index + 1
+  } else {
+    paramCount = count + 1
+  }
+
   Vue.set(state.requestParams, 'parameter' + paramCount, {
     name: '',
     value: '',
@@ -25,4 +33,16 @@ export function setRequestParameter (state, payload) {
 
 export function removeRequestParameter (state, index) {
   Vue.delete(state.requestParams, 'parameter' + index)
+}
+
+export function setRequestResponse (state, payload) {
+  state.requestResponse = payload
+}
+
+export function setRequestMethod (state, payload) {
+  state.requestMethod = payload
+}
+
+export function setRequestURL (state, payload) {
+  state.requestURL = payload
 }

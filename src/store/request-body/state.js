@@ -1,5 +1,11 @@
 export default function () {
   return {
-    requestParams: {}
+    requestParams: {},
+    requestResponse: {},
+    requestURL: 'https://',
+    requestMethod: {
+      label: 'GET',
+      value: 'get'
+    }
   }
 }
