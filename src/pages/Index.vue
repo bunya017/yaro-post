@@ -36,6 +36,17 @@
         <div class="text-h6">Request Body</div>
       </q-card-section>
       <q-separator />
+      <q-card-section class="q-py-sm row">
+        <div class="col-6 q-mx-auto">
+          <q-select
+            dense
+            outlined
+            label="Content Type"
+            :options="contentTypeOptions"
+            v-model="requestContentType"
+          />
+        </div>
+      </q-card-section>
       <q-card-section class="q-py-sm">
         <div
           :key="field.index"
@@ -260,6 +271,20 @@ export default {
           value: 'patch'
         }
       ],
+      contentTypeOptions: [
+        {
+          label: 'JSON',
+          value: 'application/json'
+        },
+        {
+          label: 'Multipart Form Data',
+          value: 'multipart/form-data'
+        },
+        {
+          label: 'URLEncoded Form Data',
+          value: 'application/x-www-form-urlencoded'
+        }
+      ],
       parameters: [],
       headerExpanded: false,
       statusIsOk: null,
@@ -277,8 +302,11 @@ export default {
     },
     sendRequest () {
       let self = this
+      let headers = {}
       let payload = null
       let params = self.$store.state.request.requestParams
+      headers['content-type'] = self.requestContentType.value
+
       if (self.hasFile) {
         payload = new FormData()
         for (const param in params) {
@@ -297,7 +325,8 @@ export default {
       self.$axios({
         url: self.requestURL,
         method: self.requestMethod.value,
-        data: payload
+        data: payload,
+        headers: headers
       })
         .then(function (response) {
           self.statusIsOk = true
@@ -341,6 +370,14 @@ export default {
       },
       set (value) {
         this.$store.dispatch('request/setRequestURLAction', value)
+      }
+    },
+    requestContentType: {
+      get () {
+        return this.$store.state.request.requestContentType
+      },
+      set (value) {
+        this.$store.dispatch('request/setRequestContentTypeAction', value)
       }
     }
   }
