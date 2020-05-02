@@ -21,3 +21,7 @@ export function setRequestMethodAction ({ commit }, payload) {
 export function setRequestURLAction ({ commit }, payload) {
   commit('setRequestURL', payload)
 }
+
+export function setRequestContentTypeAction ({ commit }, payload) {
+  commit('setRequestContentType', payload)
+}
