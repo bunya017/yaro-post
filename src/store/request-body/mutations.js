@@ -46,3 +46,7 @@ export function setRequestMethod (state, payload) {
 export function setRequestURL (state, payload) {
   state.requestURL = payload
 }
+
+export function setRequestContentType (state, payload) {
+  state.requestContentType = payload
+}
