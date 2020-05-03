@@ -50,3 +50,21 @@ export function setRequestURL (state, payload) {
 export function setRequestContentType (state, payload) {
   state.requestContentType = payload
 }
+
+export function addRequestHeader (state) {
+  let count = Object.keys(state.requestParams).length
+  let headerCount = 0
+
+  if (count > 0) {
+    let headers = Object.keys(state.requestHeaders).sort()
+    headerCount = state.requestHeaders[headers[headers.length - 1]].index + 1
+  } else {
+    headerCount = count + 1
+  }
+
+  Vue.set(state.requestHeaders, 'header' + headerCount, {
+    name: '',
+    value: '',
+    index: headerCount
+  })
+}
