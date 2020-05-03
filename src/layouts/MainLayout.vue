@@ -9,7 +9,7 @@
 
         <q-btn dense flat icon="minimize" @click="minimize" />
         <q-btn dense flat icon="crop_square" @click="maximize" />
-        <q-btn dense flat icon="close" />
+        <q-btn dense flat icon="close" @click="close" />
       </q-bar>
     </q-header>
 
@@ -38,6 +38,11 @@ export default {
         } else {
           win.maximize()
         }
+      }
+    },
+    close () {
+      if (process.env.MODE === 'electron') {
+        this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
       }
     }
   }
