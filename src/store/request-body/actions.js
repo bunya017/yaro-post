@@ -29,3 +29,7 @@ export function setRequestContentTypeAction ({ commit }, payload) {
 export function addRequestHeaderAction ({ commit }) {
   commit('addRequestHeader')
 }
+
+export function setRequestHeaderAction ({ commit }, payload) {
+  commit('setRequestHeader', payload)
+}
