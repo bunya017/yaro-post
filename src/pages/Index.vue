@@ -96,6 +96,55 @@
           </div>
         </q-expansion-item>
       </q-card-section>
+      <!-- Basic auth -->
+      <q-card-section class="q-py-sm">
+        <q-expansion-item
+          dense
+          v-model="basicAuthExpanded"
+        >
+          <template v-slot:header>
+            <div class="text-h6 q-pl-none">Basic Auth</div>
+          </template>
+          <div class="row q-pa-md q-gutter-md justify-center">
+            <div class="col-4">
+              <q-input
+                dense
+                outlined
+                type="text"
+                label="username"
+                @change="
+                  $store.dispatch('request/setBasicAuthAction', {
+                    field: 'username',
+                    username: $event.target.value
+                  })
+                "
+              />
+            </div>
+            <div class="col-4">
+              <q-input
+                dense
+                outlined
+                label="password"
+                :type="isPwd ? 'password' : 'text'"
+                @change="
+                  $store.dispatch('request/setBasicAuthAction', {
+                    field: 'password',
+                    password: $event.target.value
+                  })
+                "
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
+            </div>
+          </div>
+        </q-expansion-item>
+      </q-card-section>
     </q-card>
 
     <!-- Request Body Section-->
