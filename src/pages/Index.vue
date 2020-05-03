@@ -25,6 +25,16 @@
           </div>
         </div>
       </q-card-section>
+      <q-card-section class="q-py-sm">
+        <q-expansion-item
+          dense
+          v-model="requestHeaderExpanded"
+        >
+          <template v-slot:header>
+            <div class="text-h6 q-pl-none">Headers</div>
+          </template>
+        </q-expansion-item>
+      </q-card-section>
     </q-card>
 
     <!-- Request Body Section-->
