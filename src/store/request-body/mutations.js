@@ -84,3 +84,14 @@ export function setRequestHeader (state, payload) {
 export function removeRequestHeader (state, index) {
   Vue.delete(state.requestHeaders, 'header' + index)
 }
+
+export function setBasicAuth (state, payload) {
+  switch (payload.field) {
+    case 'username':
+      state.basicAuth.username = payload.username
+      break
+    case 'password':
+      state.basicAuth.password = payload.password
+      break
+  }
+}
