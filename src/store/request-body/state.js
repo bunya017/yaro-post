@@ -4,6 +4,10 @@ export default function () {
     requestHeaders: {},
     requestResponse: {},
     requestURL: 'https://',
+    basicAuth: {
+      username: '',
+      password: ''
+    },
     requestMethod: {
       label: 'GET',
       value: 'get'
