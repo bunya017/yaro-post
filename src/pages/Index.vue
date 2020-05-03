@@ -33,6 +33,44 @@
           <template v-slot:header>
             <div class="text-h6 q-pl-none">Headers</div>
           </template>
+          <div
+            :key="field.index"
+            v-for="field in requestHeaders"
+            class="row q-pa-md q-gutter-md"
+          >
+            <div class="col-5">
+              <q-input
+                dense
+                outlined
+                type="text"
+                :placeholder="`header ${field.index}`"
+                @change="
+                  $store.dispatch('request/setRequestHeaderAction', {
+                    field: 'name',
+                    index: field.index,
+                    name: $event.target.value
+                  })
+                "
+                :value="requestHeaders['header' + field.index].name"
+              />
+            </div>
+            <div class="col-5">
+              <q-input
+                dense
+                outlined
+                type="text"
+                placeholder="value"
+                @change="
+                  $store.dispatch('request/setRequestHeaderAction', {
+                    field: 'value',
+                    index: field.index,
+                    value: $event.target.value
+                  })
+                "
+                :value="requestHeaders['header' + field.index].value"
+              />
+            </div>
+          </div>
           <div class="row q-pa-md">
             <div class="col-3 q-mx-auto">
               <!-- Add header button -->
