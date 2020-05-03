@@ -1,6 +1,7 @@
 export default function () {
   return {
     requestParams: {},
+    requestHeaders: {},
     requestResponse: {},
     requestURL: 'https://',
     requestMethod: {
