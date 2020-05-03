@@ -6,6 +6,7 @@
         <div class="text-h6">Request</div>
       </q-card-section>
       <q-separator />
+      <!-- Request method & URL -->
       <q-card-section class="q-py-sm">
         <div class="row q-px-md q-pt-md q-pb-none">
           <div class="col-3">
@@ -25,6 +26,7 @@
           </div>
         </div>
       </q-card-section>
+      <!-- Request headers -->
       <q-card-section class="q-py-sm">
         <q-expansion-item
           dense
@@ -34,7 +36,7 @@
             <div class="text-h6 q-pl-none">Headers</div>
           </template>
           <div
-            :key="field.index"
+            :key="field.name"
             v-for="field in requestHeaders"
             class="row q-pa-md q-gutter-md"
           >
@@ -316,6 +318,13 @@ export default {
   name: 'Home',
   data () {
     return {
+      isPwd: true,
+      parameters: [],
+      statusIsOk: null,
+      headerExpanded: false,
+      htmlExpanded: false,
+      basicAuthExpanded: false,
+      requestHeaderExpanded: false,
       options: [
         {
           label: 'GET',
@@ -351,12 +360,7 @@ export default {
           label: 'URLEncoded Form Data',
           value: 'application/x-www-form-urlencoded'
         }
-      ],
-      parameters: [],
-      headerExpanded: false,
-      statusIsOk: null,
-      htmlExpanded: false,
-      requestHeaderExpanded: false
+      ]
     }
   },
   methods: {
@@ -407,10 +411,8 @@ export default {
     },
     sendRequest () {
       let self = this
-      let headers = {}
       let payload = null
       let params = self.$store.state.request.requestParams
-      headers['content-type'] = self.requestContentType.value
 
       if (self.requestContentType.value === 'multipart/form-data') {
         payload = new FormData()
@@ -427,11 +429,12 @@ export default {
       } else {
         payload = self.requestPayload
       }
+      this.$axios.defaults.headers['content-type'] = self.requestContentType.value
       self.$axios({
         url: self.requestURL,
         method: self.requestMethod.value,
         data: payload,
-        headers: headers
+        headers: self.headersPayload
       })
         .then(function (response) {
           self.statusIsOk = true
@@ -487,6 +490,14 @@ export default {
       set (value) {
         this.$store.dispatch('request/setRequestContentTypeAction', value)
       }
+    },
+    headersPayload () {
+      let payload = {}
+      let headers = this.$store.state.request.requestHeaders
+      for (let header in headers) {
+        payload[headers[header].name] = headers[header].value
+      }
+      return payload
     }
   }
 }
