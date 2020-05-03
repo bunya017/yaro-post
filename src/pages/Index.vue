@@ -33,6 +33,18 @@
           <template v-slot:header>
             <div class="text-h6 q-pl-none">Headers</div>
           </template>
+          <div class="row q-pa-md">
+            <div class="col-3 q-mx-auto">
+              <!-- Add header button -->
+              <q-btn
+                color="white"
+                text-color="primary"
+                icon="add"
+                label="Add header"
+                @click="$store.dispatch('request/addRequestHeaderAction')"
+              />
+            </div>
+          </div>
         </q-expansion-item>
       </q-card-section>
     </q-card>
