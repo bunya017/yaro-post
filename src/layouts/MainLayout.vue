@@ -7,7 +7,7 @@
 
         <q-space />
 
-        <q-btn dense flat icon="minimize" />
+        <q-btn dense flat icon="minimize" @click="minimize" />
         <q-btn dense flat icon="crop_square" />
         <q-btn dense flat icon="close" />
       </q-bar>
@@ -23,8 +23,11 @@
 
 export default {
   name: 'MainLayout',
-  data () {
-    return {
+  methods: {
+    minimize () {
+      if (process.env.MODE === 'electron') {
+        this.$q.electron.remote.BrowserWindow.getFocusedWindow().minimize()
+      }
     }
   }
 }
