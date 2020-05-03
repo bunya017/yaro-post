@@ -1,11 +1,16 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-      </q-toolbar>
+      <q-bar class="q-electron-drag">
+        <q-icon name="laptop_chromebook" />
+        <div>Yaropost</div>
+
+        <q-space />
+
+        <q-btn dense flat icon="minimize" />
+        <q-btn dense flat icon="crop_square" />
+        <q-btn dense flat icon="close" />
+      </q-bar>
     </q-header>
 
     <q-page-container>
