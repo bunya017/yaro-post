@@ -33,3 +33,7 @@ export function addRequestHeaderAction ({ commit }) {
 export function setRequestHeaderAction ({ commit }, payload) {
   commit('setRequestHeader', payload)
 }
+
+export function removeRequestHeaderAction ({ commit }, index) {
+  commit('removeRequestHeader', index)
+}
