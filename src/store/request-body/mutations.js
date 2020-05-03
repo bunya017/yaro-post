@@ -46,3 +46,52 @@ export function setRequestMethod (state, payload) {
 export function setRequestURL (state, payload) {
   state.requestURL = payload
 }
+
+export function setRequestContentType (state, payload) {
+  state.requestContentType = payload
+}
+
+export function addRequestHeader (state) {
+  let count = Object.keys(state.requestParams).length
+  let headerCount = 0
+
+  if (count > 0) {
+    let headers = Object.keys(state.requestHeaders).sort()
+    headerCount = state.requestHeaders[headers[headers.length - 1]].index + 1
+  } else {
+    headerCount = count + 1
+  }
+
+  Vue.set(state.requestHeaders, 'header' + headerCount, {
+    name: '',
+    value: '',
+    index: headerCount
+  })
+}
+
+export function setRequestHeader (state, payload) {
+  let header = state.requestHeaders['header' + payload.index]
+  switch (payload.field) {
+    case 'name':
+      header.name = payload.name
+      break
+    case 'value':
+      header.value = payload.value
+      break
+  }
+}
+
+export function removeRequestHeader (state, index) {
+  Vue.delete(state.requestHeaders, 'header' + index)
+}
+
+export function setBasicAuth (state, payload) {
+  switch (payload.field) {
+    case 'username':
+      state.basicAuth.username = payload.username
+      break
+    case 'password':
+      state.basicAuth.password = payload.password
+      break
+  }
+}
