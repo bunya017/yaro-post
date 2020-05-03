@@ -118,6 +118,7 @@
                     username: $event.target.value
                   })
                 "
+                :value="basicAuth.username"
               />
             </div>
             <div class="col-4">
@@ -132,6 +133,7 @@
                     password: $event.target.value
                   })
                 "
+                :value="basicAuth.password"
               >
                 <template v-slot:append>
                   <q-icon
@@ -478,6 +480,9 @@ export default {
       } else {
         payload = self.requestPayload
       }
+      if (self.basicAuth.username) {
+        this.$axios.defaults.auth = self.basicAuth
+      }
       this.$axios.defaults.headers['content-type'] = self.requestContentType.value
       self.$axios({
         url: self.requestURL,
@@ -547,6 +552,9 @@ export default {
         payload[headers[header].name] = headers[header].value
       }
       return payload
+    },
+    basicAuth () {
+      return this.$store.state.request.basicAuth
     }
   }
 }
