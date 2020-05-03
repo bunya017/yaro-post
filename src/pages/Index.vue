@@ -6,8 +6,8 @@
         <div class="text-h6">Request</div>
       </q-card-section>
       <q-separator />
-      <q-card-section>
-        <div class="row q-pa-md">
+      <q-card-section class="q-py-sm">
+        <div class="row q-px-md q-pt-md q-pb-none">
           <div class="col-3">
             <q-select
               dense
@@ -286,7 +286,8 @@ export default {
       parameters: [],
       headerExpanded: false,
       statusIsOk: null,
-      htmlExpanded: false
+      htmlExpanded: false,
+      requestHeaderExpanded: false
     }
   },
   methods: {
@@ -376,6 +377,9 @@ export default {
   computed: {
     requestParams () {
       return this.$store.state.request.requestParams
+    },
+    requestHeaders () {
+      return this.$store.state.request.requestHeaders
     },
     requestPayload () {
       let payload = {}
