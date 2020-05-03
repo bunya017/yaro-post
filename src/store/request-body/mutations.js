@@ -80,3 +80,7 @@ export function setRequestHeader (state, payload) {
       break
   }
 }
+
+export function removeRequestHeader (state, index) {
+  Vue.delete(state.requestHeaders, 'header' + index)
+}
