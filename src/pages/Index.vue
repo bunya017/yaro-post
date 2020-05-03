@@ -70,6 +70,15 @@
                 :value="requestHeaders['header' + field.index].value"
               />
             </div>
+            <div class="col-1">
+              <!-- Remove header button -->
+              <q-btn
+                dense
+                color="grey"
+                icon="delete"
+                @click="$store.dispatch('request/removeRequestHeaderAction', field.index)"
+              />
+            </div>
           </div>
           <div class="row q-pa-md">
             <div class="col-3 q-mx-auto">
