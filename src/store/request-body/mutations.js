@@ -68,3 +68,15 @@ export function addRequestHeader (state) {
     index: headerCount
   })
 }
+
+export function setRequestHeader (state, payload) {
+  let header = state.requestHeaders['header' + payload.index]
+  switch (payload.field) {
+    case 'name':
+      header.name = payload.name
+      break
+    case 'value':
+      header.value = payload.value
+      break
+  }
+}
