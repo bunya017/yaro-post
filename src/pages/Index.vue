@@ -98,7 +98,6 @@
                 index: field.index,
                 param: files
               })
-              hasFile = true
             }"
             @removed="(files) => {
               if ($refs['fileInput' + field.index][0].files.length > 0) {
@@ -114,7 +113,6 @@
                   param: null
                 })
               }
-              hasFile = false
             }"
           >
             <template v-slot:header="scope">
@@ -288,17 +286,54 @@ export default {
       parameters: [],
       headerExpanded: false,
       statusIsOk: null,
-      htmlExpanded: false,
-      hasFile: false
+      htmlExpanded: false
     }
   },
   methods: {
-    addParameter (payload, type) {
-      this.parameters.push(payload)
+    addParameter (payload) {
       this.$store.dispatch('request/addRequestParameterAction', payload.type)
+      if ((Object.keys(this.$refs).length === 0) && (payload.type === 'file')) {
+        this.$store.dispatch(
+          'request/setRequestContentTypeAction',
+          {
+            label: 'Multipart Form Data',
+            value: 'multipart/form-data'
+          }
+        )
+        this.contentTypeOptions = [{
+          label: 'Multipart Form Data',
+          value: 'multipart/form-data'
+        }]
+      }
     },
     removeParameter (index) {
       this.$store.dispatch('request/removeRequestParameterAction', index)
+      if (this.$refs['fileInput' + index]) {
+        this.$delete(this.$refs, 'fileInput' + index)
+      }
+      if (Object.keys(this.$refs).length === 0) {
+        this.$store.dispatch(
+          'request/setRequestContentTypeAction',
+          {
+            label: 'JSON',
+            value: 'application/json'
+          }
+        )
+        this.contentTypeOptions = [
+          {
+            label: 'JSON',
+            value: 'application/json'
+          },
+          {
+            label: 'Multipart Form Data',
+            value: 'multipart/form-data'
+          },
+          {
+            label: 'URLEncoded Form Data',
+            value: 'application/x-www-form-urlencoded'
+          }
+        ]
+      }
     },
     sendRequest () {
       let self = this
@@ -307,7 +342,7 @@ export default {
       let params = self.$store.state.request.requestParams
       headers['content-type'] = self.requestContentType.value
 
-      if (self.hasFile) {
+      if (self.requestContentType.value === 'multipart/form-data') {
         payload = new FormData()
         for (const param in params) {
           if (params[param].type !== 'file') {
