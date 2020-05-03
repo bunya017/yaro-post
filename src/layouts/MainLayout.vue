@@ -7,9 +7,27 @@
 
         <q-space />
 
-        <q-btn dense flat icon="minimize" @click="minimize" />
-        <q-btn dense flat icon="crop_square" @click="maximize" />
-        <q-btn dense flat icon="close" @click="close" />
+          <q-btn
+            flat
+            dense
+            class="q-px-sm"
+            icon="minimize"
+            @click="minimize"
+          />
+          <q-btn
+            flat
+            dense
+            @click="maximize"
+            :icon="showRestoreIcon ? 'filter_none' : 'crop_square'"
+            class="rotate-180 q-px-sm"
+          />
+          <q-btn
+            flat
+            dense
+            icon="close"
+            @click="close"
+            class="q-px-sm"
+          />
       </q-bar>
     </q-header>
 
@@ -23,6 +41,11 @@
 
 export default {
   name: 'MainLayout',
+  data () {
+    return {
+      showRestoreIcon: false
+    }
+  },
   methods: {
     minimize () {
       if (process.env.MODE === 'electron') {
@@ -34,8 +57,10 @@ export default {
         const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
 
         if (win.isMaximized()) {
+          this.showRestoreIcon = false
           win.unmaximize()
         } else {
+          this.showRestoreIcon = true
           win.maximize()
         }
       }
