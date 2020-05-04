@@ -36,7 +36,7 @@
             <div class="text-h6 q-pl-none">Headers</div>
           </template>
           <div
-            :key="field.name"
+            :key="field.index"
             v-for="field in requestHeaders"
             class="row q-pa-md q-gutter-md"
           >
