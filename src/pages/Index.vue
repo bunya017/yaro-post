@@ -356,9 +356,9 @@
           </div>
         </q-expansion-item>
       </q-card-section>
-      <div v-if="rawResponse.data">
+      <div v-if="rawResponse">
         <!-- HTML Response Data -->
-        <q-card-section class="q-py-sm" v-if="rawResponse.headers['content-type'] === 'text/html'">
+        <q-card-section class="q-py-sm" v-if="rawResponse.headers['content-type'].includes('text/html')">
           <q-expansion-item
             dense
             class="q-pb-lg"
