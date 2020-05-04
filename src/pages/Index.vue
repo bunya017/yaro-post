@@ -1,12 +1,12 @@
 <template>
   <q-page padding>
-    <!-- Request Section-->
+    <!-- Request Section -->
     <q-card>
       <q-card-section class="q-py-sm">
         <div class="text-h6">Request</div>
       </q-card-section>
       <q-separator />
-      <!-- Request method & URL -->
+      <!-- Request Method & URL -->
       <q-card-section class="q-py-sm">
         <div class="row q-px-md q-pt-md q-pb-none">
           <div class="col-3">
@@ -26,7 +26,7 @@
           </div>
         </div>
       </q-card-section>
-      <!-- Request headers -->
+      <!-- Request Headers -->
       <q-card-section class="q-py-sm">
         <q-expansion-item
           dense
@@ -38,7 +38,7 @@
           <div
             :key="field.index"
             v-for="field in requestHeaders"
-            class="row q-pa-md q-gutter-md"
+            class="row q-px-md q-py-sm q-gutter-md"
           >
             <div class="col-5">
               <q-input
@@ -96,7 +96,7 @@
           </div>
         </q-expansion-item>
       </q-card-section>
-      <!-- Basic auth -->
+      <!-- Basic Auth -->
       <q-card-section class="q-py-sm">
         <q-expansion-item
           dense
@@ -149,7 +149,7 @@
       </q-card-section>
     </q-card>
 
-    <!-- Request Body Section-->
+    <!-- Request Body Section -->
     <q-card
       class="q-mt-md"
       v-if="(requestMethod.value !== 'get') && (requestMethod.value !== 'delete')"
@@ -158,6 +158,7 @@
         <div class="text-h6">Request Body</div>
       </q-card-section>
       <q-separator />
+      <!-- Request Content-Type -->
       <q-card-section class="q-py-sm row">
         <div class="col-6 q-mx-auto">
           <q-select
@@ -169,11 +170,12 @@
           />
         </div>
       </q-card-section>
+      <!-- Request Params -->
       <q-card-section class="q-py-sm">
         <div
           :key="field.index"
           v-for="field in requestParams"
-          class="row q-pa-md q-gutter-md"
+          class="row q-px-md q-py-sm q-gutter-md"
         >
           <div class="col-5">
             <q-input
@@ -313,18 +315,19 @@
       </q-card-section>
     </q-card>
 
-    <!-- Response Section-->
+    <!-- Response Section -->
     <q-card class="q-mt-md" v-if="responseData">
       <q-card-section class="q-py-sm">
         <div class="text-h6">Response</div>
       </q-card-section>
       <q-separator />
+      <!-- Response Status -->
       <q-card-section>
         <span :class="['text-h3', statusIsOk ? 'text-positive' : 'text-negative' ]">
           {{ rawResponse.status }}
         </span> <span class="grey-8">{{ rawResponse.statusText }}</span>
       </q-card-section>
-      <!-- Response Headers-->
+      <!-- Response Headers -->
       <q-card-section class="q-py-sm">
         <q-expansion-item
           dense
@@ -340,6 +343,7 @@
           </div>
         </q-expansion-item>
       </q-card-section>
+      <!-- HTML Response Data -->
       <q-card-section class="q-py-sm" v-if="rawResponse.headers['content-type'] === 'text/html'">
         <q-expansion-item
           dense
@@ -355,6 +359,7 @@
           class="bg-grey-2 rounded-borders q-pa-sm scroll"
         ><code>{{ rawResponse.data }}</code></pre>
       </q-card-section>
+      <!-- Response Data -->
       <q-card-section class="q-py-sm" v-else>
         <pre
           class="bg-grey-2 rounded-borders q-pa-sm scroll"
