@@ -8,23 +8,36 @@
       <q-separator />
       <!-- Request Method & URL -->
       <q-card-section class="q-py-sm">
-        <div class="row q-px-md q-pt-md q-pb-none">
-          <div class="col-3">
-            <q-select
-              dense
-              outlined
-              label="Method"
-              :options="options"
-              v-model="requestMethod"
-            />
+        <form @submit.prevent.stop="sendRequest">
+          <div class="row q-px-md q-pt-md q-pb-none">
+            <div class="col-3">
+              <q-select
+                dense
+                outlined
+                label="Method"
+                :options="options"
+                v-model="requestMethod"
+              />
+            </div>
+            <div class="col-8 q-px-md">
+              <q-input
+                dense
+                outlined
+                ref="requestURL"
+                label="URL"
+                lazy-rules
+                v-model="requestURL"
+                :rules="[
+                  val => !!val || 'THis field is required',
+                  val => checkHTTP(val) || 'Please prefix url with \'http://\' or \'https://\'.'
+                ]"
+              />
+            </div>
+            <div class="col-1">
+              <q-btn color="primary" type="submit" label="Send" />
+            </div>
           </div>
-          <div class="col-8 q-px-md">
-            <q-input dense outlined v-model="requestURL" label="URL" />
-          </div>
-          <div class="col-1">
-            <q-btn color="primary" label="Send" @click="sendRequest" />
-          </div>
-        </div>
+        </form>
       </q-card-section>
       <!-- Request Headers -->
       <q-card-section class="q-py-sm">
@@ -423,6 +436,13 @@ export default {
     }
   },
   methods: {
+    checkHTTP (value) {
+      let hasHTTP = false
+      if (value.includes('http://') || value.includes('https://')) {
+        hasHTTP = true
+      }
+      return hasHTTP
+    },
     addParameter (payload) {
       this.$store.dispatch('request/addRequestParameterAction', payload.type)
       if ((Object.keys(this.$refs).length === 0) && (payload.type === 'file')) {
@@ -470,6 +490,13 @@ export default {
     },
     sendRequest () {
       let self = this
+
+      // Validate url field
+      self.$refs.requestURL.validate()
+      if (self.$refs.requestURL.hasError) {
+        self.formHasError = true
+      }
+
       let payload = null
       let params = self.$store.state.request.requestParams
       // Clear $store.state.request.requestResponse
