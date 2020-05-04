@@ -4,30 +4,29 @@
       <q-bar class="q-electron-drag">
         <q-icon name="laptop_chromebook" />
         <div>Yaropost</div>
-
         <q-space />
-
-          <q-btn
-            flat
-            dense
-            class="q-px-sm"
-            icon="minimize"
-            @click="minimize"
-          />
-          <q-btn
-            flat
-            dense
-            @click="maximize"
-            :icon="showRestoreIcon ? 'filter_none' : 'crop_square'"
-            class="rotate-180 q-px-sm"
-          />
-          <q-btn
-            flat
-            dense
-            icon="close"
-            @click="close"
-            class="q-px-sm"
-          />
+        <q-btn
+          flat
+          dense
+          class="q-px-sm"
+          icon="minimize"
+          @click="minimize"
+        />
+        <q-btn
+          flat
+          dense
+          @click="maximize"
+          :icon="showRestoreIcon ? 'filter_none' : 'crop_square'"
+          class="rotate-180 q-px-sm"
+        />
+        <q-btn
+          flat
+          dense
+          icon="close"
+          @click="close"
+          class="q-px-sm"
+        />
+        <q-resize-observer @resize="isWindowMaximized" />
       </q-bar>
     </q-header>
 
@@ -57,10 +56,8 @@ export default {
         const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
 
         if (win.isMaximized()) {
-          this.showRestoreIcon = false
           win.unmaximize()
         } else {
-          this.showRestoreIcon = true
           win.maximize()
         }
       }
@@ -68,6 +65,17 @@ export default {
     close () {
       if (process.env.MODE === 'electron') {
         this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
+      }
+    },
+    isWindowMaximized () {
+      if (process.env.MODE === 'electron') {
+        const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
+
+        if (win.isMaximized()) {
+          this.showRestoreIcon = true
+        } else {
+          this.showRestoreIcon = false
+        }
       }
     }
   }

@@ -1,32 +1,45 @@
 <template>
   <q-page padding>
-    <!-- Request Section-->
+    <!-- Request Section -->
     <q-card>
       <q-card-section class="q-py-sm">
         <div class="text-h6">Request</div>
       </q-card-section>
       <q-separator />
-      <!-- Request method & URL -->
+      <!-- Request Method & URL -->
       <q-card-section class="q-py-sm">
-        <div class="row q-px-md q-pt-md q-pb-none">
-          <div class="col-3">
-            <q-select
-              dense
-              outlined
-              label="Method"
-              :options="options"
-              v-model="requestMethod"
-            />
+        <form @submit.prevent.stop="sendRequest">
+          <div class="row q-px-md q-pt-md q-pb-none">
+            <div class="col-3">
+              <q-select
+                dense
+                outlined
+                label="Method"
+                :options="options"
+                v-model="requestMethod"
+              />
+            </div>
+            <div class="col-8 q-px-md">
+              <q-input
+                dense
+                outlined
+                ref="requestURL"
+                label="URL"
+                lazy-rules
+                v-model="requestURL"
+                :rules="[
+                  val => !!val || 'THis field is required',
+                  val => checkHTTP(val) || 'Please prefix url with \'http://\' or \'https://\'.'
+                ]"
+              />
+            </div>
+            <div class="col-1">
+              <q-btn color="primary" type="submit" label="Send" />
+            </div>
           </div>
-          <div class="col-8 q-px-md">
-            <q-input dense outlined v-model="requestURL" label="URL" />
-          </div>
-          <div class="col-1">
-            <q-btn color="primary" label="Send" @click="sendRequest" />
-          </div>
-        </div>
+        </form>
       </q-card-section>
-      <!-- Request headers -->
+      <!-- Request Headers -->
       <q-card-section class="q-py-sm">
         <q-expansion-item
           dense
@@ -36,9 +49,9 @@
             <div class="text-h6 q-pl-none">Headers</div>
           </template>
           <div
-            :key="field.name"
+            :key="field.index"
             v-for="field in requestHeaders"
-            class="row q-pa-md q-gutter-md"
+            class="row q-px-md q-py-sm q-gutter-md"
           >
             <div class="col-5">
               <q-input
@@ -96,7 +109,7 @@
           </div>
         </q-expansion-item>
       </q-card-section>
-      <!-- Basic auth -->
+      <!-- Basic Auth -->
       <q-card-section class="q-py-sm">
         <q-expansion-item
           dense
@@ -149,7 +162,7 @@
       </q-card-section>
     </q-card>
 
-    <!-- Request Body Section-->
+    <!-- Request Body Section -->
     <q-card
       class="q-mt-md"
       v-if="(requestMethod.value !== 'get') && (requestMethod.value !== 'delete')"
@@ -158,6 +171,7 @@
         <div class="text-h6">Request Body</div>
       </q-card-section>
       <q-separator />
+      <!-- Request Content-Type -->
       <q-card-section class="q-py-sm row">
         <div class="col-6 q-mx-auto">
           <q-select
@@ -169,11 +183,12 @@
           />
         </div>
       </q-card-section>
+      <!-- Request Params -->
       <q-card-section class="q-py-sm">
         <div
           :key="field.index"
           v-for="field in requestParams"
-          class="row q-pa-md q-gutter-md"
+          class="row q-px-md q-py-sm q-gutter-md"
         >
           <div class="col-5">
             <q-input
@@ -313,18 +328,19 @@
       </q-card-section>
     </q-card>
 
-    <!-- Response Section-->
+    <!-- Response Section -->
     <q-card class="q-mt-md" v-if="responseData">
       <q-card-section class="q-py-sm">
         <div class="text-h6">Response</div>
       </q-card-section>
       <q-separator />
+      <!-- Response Status -->
       <q-card-section>
         <span :class="['text-h3', statusIsOk ? 'text-positive' : 'text-negative' ]">
           {{ rawResponse.status }}
         </span> <span class="grey-8">{{ rawResponse.statusText }}</span>
       </q-card-section>
-      <!-- Response Headers-->
+      <!-- Response Headers -->
       <q-card-section class="q-py-sm">
         <q-expansion-item
           dense
@@ -340,26 +356,31 @@
           </div>
         </q-expansion-item>
       </q-card-section>
-      <q-card-section class="q-py-sm" v-if="rawResponse.headers['content-type'] === 'text/html'">
-        <q-expansion-item
-          dense
-          class="q-pb-lg"
-          v-model="htmlExpanded"
-        >
-          <template v-slot:header>
-            <div class="text-h6 q-pl-none">Preview</div>
-          </template>
-          <span class="scroll" v-html="rawResponse.data"></span>
-        </q-expansion-item>
-        <pre
-          class="bg-grey-2 rounded-borders q-pa-sm scroll"
-        ><code>{{ rawResponse.data }}</code></pre>
-      </q-card-section>
-      <q-card-section class="q-py-sm" v-else>
-        <pre
-          class="bg-grey-2 rounded-borders q-pa-sm scroll"
-        ><code>{{ responseData }}</code></pre>
-      </q-card-section>
+      <div v-if="rawResponse">
+        <!-- HTML Response Data -->
+        <q-card-section class="q-py-sm" v-if="rawResponse.headers['content-type'].includes('text/html')">
+          <q-expansion-item
+            dense
+            class="q-pb-lg"
+            v-model="htmlExpanded"
+          >
+            <template v-slot:header>
+              <div class="text-h6 q-pl-none">Preview</div>
+            </template>
+            <span class="scroll" v-html="rawResponse.data"></span>
+          </q-expansion-item>
+          <pre
+            class="bg-grey-2 rounded-borders q-pa-sm scroll"
+          ><code>{{ rawResponse.data }}</code></pre>
+        </q-card-section>
+        <!-- Response Data -->
+        <q-card-section class="q-py-sm" v-else>
+          <pre
+            v-if="responseData"
+            class="bg-grey-2 rounded-borders q-pa-sm scroll"
+          ><code>{{ responseData }}</code></pre>
+        </q-card-section>
+      </div>
     </q-card>
   </q-page>
 </template>
@@ -415,6 +436,13 @@ export default {
     }
   },
   methods: {
+    checkHTTP (value) {
+      let hasHTTP = false
+      if (value.includes('http://') || value.includes('https://')) {
+        hasHTTP = true
+      }
+      return hasHTTP
+    },
     addParameter (payload) {
       this.$store.dispatch('request/addRequestParameterAction', payload.type)
       if ((Object.keys(this.$refs).length === 0) && (payload.type === 'file')) {
@@ -462,8 +490,17 @@ export default {
     },
     sendRequest () {
       let self = this
+
+      // Validate url field
+      self.$refs.requestURL.validate()
+      if (self.$refs.requestURL.hasError) {
+        self.formHasError = true
+      }
+
       let payload = null
       let params = self.$store.state.request.requestParams
+      // Clear $store.state.request.requestResponse
+      self.$store.dispatch('request/setRequestResponseAction', {})
 
       if (self.requestContentType.value === 'multipart/form-data') {
         payload = new FormData()
@@ -519,7 +556,11 @@ export default {
       return this.$store.state.request.requestResponse
     },
     responseData () {
-      return JSON.stringify(this.rawResponse.data, null, 2)
+      let data = ''
+      if (this.rawResponse && this.rawResponse.data) {
+        data = JSON.stringify(this.rawResponse.data, null, 2)
+      }
+      return data
     },
     requestMethod: {
       get () {
