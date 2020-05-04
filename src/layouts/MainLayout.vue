@@ -56,10 +56,8 @@ export default {
         const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
 
         if (win.isMaximized()) {
-          this.showRestoreIcon = false
           win.unmaximize()
         } else {
-          this.showRestoreIcon = true
           win.maximize()
         }
       }
