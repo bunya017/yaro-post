@@ -52,7 +52,7 @@ export function setRequestContentType (state, payload) {
 }
 
 export function addRequestHeader (state) {
-  let count = Object.keys(state.requestParams).length
+  let count = Object.keys(state.requestHeaders).length
   let headerCount = 0
 
   if (count > 0) {
