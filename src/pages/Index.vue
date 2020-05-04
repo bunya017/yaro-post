@@ -472,6 +472,8 @@ export default {
       let self = this
       let payload = null
       let params = self.$store.state.request.requestParams
+      // Clear $store.state.request.requestResponse
+      self.$store.dispatch('request/setRequestResponseAction', {})
 
       if (self.requestContentType.value === 'multipart/form-data') {
         payload = new FormData()
