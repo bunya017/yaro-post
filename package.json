@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0",
-    "build-win": "quasar build --mode electron --target win32"
+    "build-win": "quasar build --mode electron --target win32",
+    "build-all": "quasar build --mode electron --target all"
   },
   "dependencies": {
     "@quasar/extras": "^1.6.4",
