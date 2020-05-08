@@ -380,6 +380,7 @@ export default {
       parameters: [],
       statusIsOk: null,
       headerExpanded: false,
+      htmlExpanded: false,
       basicAuthExpanded: false,
       requestHeaderExpanded: false,
       options: [
@@ -470,6 +471,15 @@ export default {
       let self = this
       let payload = null
       let params = self.$store.state.request.requestParams
+
+      // Set 'https://' as protocol if none if provided
+      if (!self.requestURL.startsWith('http://') && !self.requestURL.startsWith('https://')) {
+        self.$store.dispatch(
+          'request/setRequestURLAction',
+          'https://'.concat(self.requestURL)
+        )
+      }
+
       // Clear $store.state.request.requestResponse
       self.$store.dispatch('request/setRequestResponseAction', {})
 
