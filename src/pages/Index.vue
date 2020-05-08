@@ -2,6 +2,12 @@
   <q-page padding>
     <!-- Request Section -->
     <q-card>
+      <q-ajax-bar
+        position="top"
+        color="deep-orange-6"
+        size="10px"
+        style="margin-top: 32px"
+      />
       <q-card-section class="q-py-sm">
         <div class="text-h6">Request</div>
       </q-card-section>
