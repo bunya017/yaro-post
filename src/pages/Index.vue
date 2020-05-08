@@ -27,10 +27,6 @@
                 label="URL"
                 lazy-rules
                 v-model="requestURL"
-                :rules="[
-                  val => !!val || 'THis field is required',
-                  val => checkHTTP(val) || 'Please prefix url with \'http://\' or \'https://\'.'
-                ]"
               />
             </div>
             <div class="col-1">
@@ -384,7 +380,6 @@ export default {
       parameters: [],
       statusIsOk: null,
       headerExpanded: false,
-      htmlExpanded: false,
       basicAuthExpanded: false,
       requestHeaderExpanded: false,
       options: [
@@ -426,13 +421,6 @@ export default {
     }
   },
   methods: {
-    checkHTTP (value) {
-      let hasHTTP = false
-      if (value.includes('http://') || value.includes('https://')) {
-        hasHTTP = true
-      }
-      return hasHTTP
-    },
     addParameter (payload) {
       this.$store.dispatch('request/addRequestParameterAction', payload.type)
       if ((Object.keys(this.$refs).length === 0) && (payload.type === 'file')) {
@@ -480,13 +468,6 @@ export default {
     },
     sendRequest () {
       let self = this
-
-      // Validate url field
-      self.$refs.requestURL.validate()
-      if (self.$refs.requestURL.hasError) {
-        self.formHasError = true
-      }
-
       let payload = null
       let params = self.$store.state.request.requestParams
       // Clear $store.state.request.requestResponse
