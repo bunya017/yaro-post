@@ -359,16 +359,6 @@
       <div v-if="rawResponse">
         <!-- HTML Response Data -->
         <q-card-section class="q-py-sm" v-if="rawResponse.headers['content-type'].includes('text/html')">
-          <q-expansion-item
-            dense
-            class="q-pb-lg"
-            v-model="htmlExpanded"
-          >
-            <template v-slot:header>
-              <div class="text-h6 q-pl-none">Preview</div>
-            </template>
-            <span class="scroll" v-html="rawResponse.data"></span>
-          </q-expansion-item>
           <pre
             class="bg-grey-2 rounded-borders q-pa-sm scroll"
           ><code>{{ rawResponse.data }}</code></pre>
