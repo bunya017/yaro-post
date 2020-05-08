@@ -29,7 +29,6 @@
               <q-input
                 dense
                 outlined
-                ref="requestURL"
                 label="URL"
                 lazy-rules
                 v-model="requestURL"
