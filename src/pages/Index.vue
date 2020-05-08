@@ -30,7 +30,13 @@
               />
             </div>
             <div class="col-1">
-              <q-btn color="primary" type="submit" label="Send" />
+              <q-btn
+                label="Send"
+                type="submit"
+                color="primary"
+                :loading="isLoading"
+                :disabled="isLoading"
+              />
             </div>
           </div>
         </form>
@@ -379,8 +385,9 @@ export default {
       isPwd: true,
       parameters: [],
       statusIsOk: null,
-      headerExpanded: false,
+      isLoading: false,
       htmlExpanded: false,
+      headerExpanded: false,
       basicAuthExpanded: false,
       requestHeaderExpanded: false,
       options: [
@@ -471,6 +478,7 @@ export default {
       let self = this
       let payload = null
       let params = self.$store.state.request.requestParams
+      self.isLoading = true
 
       // Set 'https://' as protocol if none if provided
       if (!self.requestURL.startsWith('http://') && !self.requestURL.startsWith('https://')) {
@@ -511,10 +519,15 @@ export default {
         .then(function (response) {
           self.statusIsOk = true
           self.$store.dispatch('request/setRequestResponseAction', response)
+          self.isLoading = false
         })
         .catch(function (error) {
           self.statusIsOk = false
           self.$store.dispatch('request/setRequestResponseAction', error.response)
+          self.isLoading = false
+        })
+        .then(function () {
+          self.isLoading = false
         })
     }
   },
