@@ -1,31 +1,36 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-bar class="q-electron-drag">
-        <q-icon name="laptop_chromebook" />
-        <div>Yaropost</div>
+      <q-bar class="q-electron-drag bg-white">
+        <q-icon color="black" name="laptop_chromebook" />
+        <div class="text-black">Yaropost</div>
         <q-space />
-        <q-btn
-          flat
-          dense
-          class="q-px-sm"
-          icon="minimize"
-          @click="minimize"
-        />
-        <q-btn
-          flat
-          dense
-          @click="maximize"
-          :icon="showRestoreIcon ? 'filter_none' : 'crop_square'"
-          class="rotate-180 q-px-sm"
-        />
-        <q-btn
-          flat
-          dense
-          icon="close"
-          @click="close"
-          class="q-px-sm"
-        />
+        <q-btn-group flat stretch>
+          <q-btn
+            flat
+            dense
+            class="q-px-sm"
+            icon="minimize"
+            @click="minimize"
+            text-color="black"
+          />
+          <q-btn
+            flat
+            dense
+            @click="maximize"
+            text-color="black"
+            :icon="showRestoreIcon ? 'filter_none' : 'crop_square'"
+            class="rotate-180 q-px-sm"
+          />
+          <q-btn
+            flat
+            dense
+            icon="close"
+            @click="close"
+            class="q-px-sm"
+            text-color="black"
+          />
+        </q-btn-group>
         <q-resize-observer @resize="isWindowMaximized" />
       </q-bar>
     </q-header>
