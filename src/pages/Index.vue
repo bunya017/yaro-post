@@ -4,7 +4,7 @@
     <q-card>
       <q-ajax-bar
         position="top"
-        color="deep-orange-6"
+        color="primary"
         size="10px"
         style="margin-top: 32px"
       />
