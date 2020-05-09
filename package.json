@@ -11,6 +11,7 @@
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0",
     "build-win": "quasar build --mode electron --target win32",
+    "build-linux": "quasar build --mode electron --target linux",
     "build-all": "quasar build --mode electron --target all"
   },
   "dependencies": {
