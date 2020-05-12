@@ -15,18 +15,18 @@
     "build-all": "quasar build --mode electron --target all"
   },
   "dependencies": {
-    "@quasar/extras": "^1.6.4",
+    "@quasar/extras": "^1.8.1",
     "axios": "^0.19.2",
-    "quasar": "^1.9.15",
+    "quasar": "^1.11.1",
     "vue": "^2.6.11",
-    "vue-i18n": "^8.17.0"
+    "vue-i18n": "^8.17.5"
   },
   "devDependencies": {
-    "@quasar/app": "^1.7.1",
+    "@quasar/app": "^1.8.6",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.1.0",
     "devtron": "^1.4.0",
-    "electron": "^7.2.2",
+    "electron": "^8.2.5",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",
     "electron-packager": "^14.2.1",
