@@ -1,8 +1,8 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated>
       <q-bar class="q-electron-drag bg-white">
-        <q-icon color="black" name="laptop_chromebook" />
+        <q-icon color="black" name="img:statics/logo/logo-128x128.png" />
         <div class="text-black">Yaropost</div>
         <q-space />
         <q-btn-group flat stretch>
