@@ -1,9 +1,9 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated>
-      <q-bar class="q-electron-drag bg-white">
-        <q-icon color="black" name="img:statics/logo/logo-128x128.png" />
-        <div class="text-black">Yaropost</div>
+      <q-bar class="q-electron-drag bg-white text-black">
+        <q-icon name="img:statics/logo/logo-128x128.png" />
+        <div>Yaropost</div>
         <q-space />
         <q-btn-group flat stretch>
           <q-btn
@@ -12,13 +12,11 @@
             class="q-px-sm"
             icon="minimize"
             @click="minimize"
-            text-color="black"
           />
           <q-btn
             flat
             dense
             @click="maximize"
-            text-color="black"
             :icon="showRestoreIcon ? 'filter_none' : 'crop_square'"
             class="rotate-180 q-px-sm"
           />
@@ -28,11 +26,22 @@
             icon="close"
             @click="close"
             class="q-px-sm"
-            text-color="black"
           />
         </q-btn-group>
         <q-resize-observer @resize="isWindowMaximized" />
       </q-bar>
+      <div class="q-pa-xs q-pl-md row items-center bg-white text-black">
+        <div class="cursor-pointer non-selectable">
+          History
+          <q-menu auto-close square>
+            <q-list dense style="min-width: 250px">
+              <q-item clickable>
+                <q-item-section>Quit</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </div>
+      </div>
     </q-header>
 
     <q-page-container>
