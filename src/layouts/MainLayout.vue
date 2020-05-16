@@ -89,10 +89,10 @@ export default {
       if (process.env.MODE === 'electron') {
         const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
 
-        if (win.isMaximized()) {
-          this.showRestoreIcon = true
-        } else {
+        if (!win.isMaximized()) {
           this.showRestoreIcon = false
+        } else {
+          this.showRestoreIcon = true
         }
       }
     },
