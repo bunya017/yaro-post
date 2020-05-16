@@ -41,9 +41,15 @@
                 </q-item-section>
               </q-item>
               <q-separator />
-              <q-item clickable v-for="(item, index) in historyEntries" :key="index">
-                <q-item-section @click="$store.dispatch('request/restoreHistoryAction', item)">
-                  {{ item['requestMethod'].label }}: {{ item['requestURL'] }}
+              <q-item clickable v-for="(value, index) in historyEntries" :key="index">
+                <q-item-section
+                  @click="$store.dispatch(
+                    'request/restoreHistoryAction',
+                    getHistory(value)
+                  )"
+                >
+                  {{ getHistory(value)['requestMethod'].label }}:
+                  {{ getHistory(value)['requestURL'] }}
                 </q-item-section>
               </q-item>
             </q-list>
@@ -127,13 +133,20 @@ export default {
       }
     },
     getAllHistory () {
-      this.historyEntries = []
       let localHistory = this.$q.localStorage.getAll()
+      this.historyEntries = []
       for (let item in localHistory) {
         if (item.includes('history')) {
-          this.historyEntries.push(localHistory[item])
+          this.historyEntries.push({
+            [item]: localHistory[item]
+          })
         }
       }
+      return history
+    },
+    getHistory (payload) {
+      let key = Object.keys(payload)[0]
+      return payload[key]
     },
     clearAllHistory () {
       this.$q.localStorage.clear()
