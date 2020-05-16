@@ -35,8 +35,10 @@
           History
           <q-menu auto-close square>
             <q-list dense style="min-width: 250px">
-              <q-item clickable v-for="(value, index) in historyEntries" :key="index">
-                <q-item-section>{{ getHistory(value)['requestURL'] }}</q-item-section>
+              <q-item clickable v-for="(item, index) in historyEntries" :key="index">
+                <q-item-section @click="$store.dispatch('request/restoreHistoryAction', item)">
+                  {{ item['requestMethod'].label }}: {{ item['requestURL'] }}
+                </q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -101,15 +103,9 @@ export default {
       let localHistory = this.$q.localStorage.getAll()
       for (let item in localHistory) {
         if (item.includes('history')) {
-          this.historyEntries.push({
-            [item]: localHistory[item]
-          })
+          this.historyEntries.push(localHistory[item])
         }
       }
-    },
-    getHistory (payload) {
-      let key = Object.keys(payload)[0]
-      return payload[key]
     }
   }
 }
