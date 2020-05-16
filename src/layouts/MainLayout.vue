@@ -94,6 +94,18 @@ export default {
           this.showRestoreIcon = false
         }
       }
+    },
+    getAllHistory () {
+      let history = []
+      let localHistory = this.$q.localStorage.getAll()
+      for (let item in localHistory) {
+        if (item.includes('history')) {
+          history.push({
+            [item]: localHistory[item]
+          })
+        }
+      }
+      return history
     }
   }
 }
