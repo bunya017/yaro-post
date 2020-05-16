@@ -31,12 +31,12 @@
         <q-resize-observer @resize="isWindowMaximized" />
       </q-bar>
       <div class="q-pa-xs q-pl-md row items-center bg-white text-black">
-        <div class="cursor-pointer non-selectable">
+        <div class="cursor-pointer non-selectable" @click="getAllHistory">
           History
           <q-menu auto-close square>
             <q-list dense style="min-width: 250px">
-              <q-item clickable>
-                <q-item-section>Quit</q-item-section>
+              <q-item clickable v-for="(value, index) in historyEntries" :key="index">
+                <q-item-section>{{ getHistory(value)['requestURL'] }}</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -59,7 +59,8 @@ export default {
   name: 'MainLayout',
   data () {
     return {
-      showRestoreIcon: false
+      showRestoreIcon: false,
+      historyEntries: []
     }
   },
   methods: {
@@ -96,16 +97,19 @@ export default {
       }
     },
     getAllHistory () {
-      let history = []
+      this.historyEntries = []
       let localHistory = this.$q.localStorage.getAll()
       for (let item in localHistory) {
         if (item.includes('history')) {
-          history.push({
+          this.historyEntries.push({
             [item]: localHistory[item]
           })
         }
       }
-      return history
+    },
+    getHistory (payload) {
+      let key = Object.keys(payload)[0]
+      return payload[key]
     }
   }
 }
