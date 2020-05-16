@@ -41,3 +41,7 @@ export function removeRequestHeaderAction ({ commit }, index) {
 export function setBasicAuthAction ({ commit }, payload) {
   commit('setBasicAuth', payload)
 }
+
+export function restoreHistoryAction ({ commit }, payload) {
+  commit('restoreHistory', payload)
+}
