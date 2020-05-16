@@ -35,6 +35,12 @@
           History
           <q-menu auto-close square>
             <q-list dense style="min-width: 250px">
+              <q-item clickable @click="clearAllHistory">
+                <q-item-section>
+                  Clear All History
+                </q-item-section>
+              </q-item>
+              <q-separator />
               <q-item clickable v-for="(item, index) in historyEntries" :key="index">
                 <q-item-section @click="$store.dispatch('request/restoreHistoryAction', item)">
                   {{ item['requestMethod'].label }}: {{ item['requestURL'] }}
@@ -106,6 +112,9 @@ export default {
           this.historyEntries.push(localHistory[item])
         }
       }
+    },
+    clearAllHistory () {
+      this.$q.localStorage.clear()
     }
   }
 }
