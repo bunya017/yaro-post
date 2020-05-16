@@ -479,6 +479,14 @@ export default {
         ]
       }
     },
+    addHistory () {
+      if ((this.requestURL !== 'http://') && (this.requestURL !== 'https://')) {
+        this.$q.localStorage.set(
+          `history - ${Date.now()}`,
+          this.$store.state.request
+        )
+      }
+    },
     sendRequest () {
       let self = this
       let payload = null
@@ -523,11 +531,15 @@ export default {
       })
         .then(function (response) {
           self.statusIsOk = true
+          // Add history entry
+          self.addHistory()
           self.$store.dispatch('request/setRequestResponseAction', response)
           self.isLoading = false
         })
         .catch(function (error) {
           self.statusIsOk = false
+          // Add history entry
+          self.addHistory()
           self.$store.dispatch('request/setRequestResponseAction', error.response)
           self.isLoading = false
         })
