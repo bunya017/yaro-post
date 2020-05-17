@@ -193,7 +193,7 @@
         <q-card-section class="text-center">
           <div class="text-h4 q-pb-md">Yaropost</div>
           <div>Copyright © 2020 Bunyaminu Sani</div>
-          <div>Version 1.0.0-rc.3</div>
+          <div>Version 1.0.0-beta.3</div>
         </q-card-section>
       </q-card>
     </q-dialog>
