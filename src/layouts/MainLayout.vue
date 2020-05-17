@@ -84,7 +84,7 @@
                   Github
                 </q-item-section>
               </q-item>
-              <q-item clickable>
+              <q-item clickable @click="aboutDialog = true">
                 <q-item-section>
                   About
                 </q-item-section>
@@ -176,6 +176,26 @@
       </q-card>
     </q-dialog>
 
+    <!-- About dialog -->
+    <q-dialog v-model="aboutDialog" persistent>
+      <q-card square style="min-width: 400px">
+        <q-bar class="bg-white">
+          <q-icon name="img:statics/logo/logo-128x128.png" />
+          <div>Yaropost</div>
+          <q-space />
+          <q-btn dense flat stretch icon="close" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </q-bar>
+        <q-separator />
+        <q-card-section class="text-center">
+          <div class="text-h4 q-pb-md">Yaropost</div>
+          <div>Copyright © 2020 Bunyaminu Sani</div>
+          <div>Version 1.0.0-rc.3</div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -192,6 +212,7 @@ export default {
   data () {
     return {
       historyEntries: [],
+      aboutDialog: false,
       showRestoreIcon: false,
       clearHistoryDialog: false,
       showAllHistoryDialog: false
