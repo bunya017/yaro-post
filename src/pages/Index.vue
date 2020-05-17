@@ -1,7 +1,13 @@
 <template>
   <q-page padding>
     <!-- Request Section -->
-    <q-card>
+    <q-card square>
+      <q-ajax-bar
+        position="top"
+        color="primary"
+        size="10px"
+        style="margin-top: 61px"
+      />
       <q-card-section class="q-py-sm">
         <div class="text-h6">Request</div>
       </q-card-section>
@@ -13,6 +19,7 @@
             <div class="col-3">
               <q-select
                 dense
+                square
                 outlined
                 label="Method"
                 :options="options"
@@ -22,19 +29,21 @@
             <div class="col-8 q-px-md">
               <q-input
                 dense
+                square
                 outlined
-                ref="requestURL"
                 label="URL"
                 lazy-rules
                 v-model="requestURL"
-                :rules="[
-                  val => !!val || 'THis field is required',
-                  val => checkHTTP(val) || 'Please prefix url with \'http://\' or \'https://\'.'
-                ]"
               />
             </div>
             <div class="col-1">
-              <q-btn color="primary" type="submit" label="Send" />
+              <q-btn
+                label="Send"
+                type="submit"
+                color="primary"
+                :loading="isLoading"
+                :disabled="isLoading"
+              />
             </div>
           </div>
         </form>
@@ -56,6 +65,7 @@
             <div class="col-5">
               <q-input
                 dense
+                square
                 outlined
                 type="text"
                 :placeholder="`header ${field.index}`"
@@ -72,6 +82,7 @@
             <div class="col-5">
               <q-input
                 dense
+                square
                 outlined
                 type="text"
                 placeholder="value"
@@ -122,6 +133,7 @@
             <div class="col-4">
               <q-input
                 dense
+                square
                 outlined
                 type="text"
                 label="username"
@@ -137,6 +149,7 @@
             <div class="col-4">
               <q-input
                 dense
+                square
                 outlined
                 label="password"
                 :type="isPwd ? 'password' : 'text'"
@@ -164,6 +177,7 @@
 
     <!-- Request Body Section -->
     <q-card
+      square
       class="q-mt-md"
       v-if="(requestMethod.value !== 'get') && (requestMethod.value !== 'delete')"
     >
@@ -176,6 +190,7 @@
         <div class="col-6 q-mx-auto">
           <q-select
             dense
+            square
             outlined
             label="Content Type"
             :options="contentTypeOptions"
@@ -193,6 +208,7 @@
           <div class="col-5">
             <q-input
               dense
+              square
               outlined
               type="text"
               placeholder="parameter name"
@@ -209,6 +225,7 @@
           <div class="col-5" v-if="field.type === 'text'">
             <q-input
               dense
+              square
               outlined
               type="text"
               placeholder="value"
@@ -223,6 +240,9 @@
             />
           </div>
           <q-uploader
+            flat
+            square
+            bordered
             multiple
             class="col-5"
             color="white"
@@ -329,7 +349,7 @@
     </q-card>
 
     <!-- Response Section -->
-    <q-card class="q-mt-md" v-if="responseData">
+    <q-card square class="q-mt-md" v-if="responseData">
       <q-card-section class="q-py-sm">
         <div class="text-h6">Response</div>
       </q-card-section>
@@ -359,16 +379,6 @@
       <div v-if="rawResponse">
         <!-- HTML Response Data -->
         <q-card-section class="q-py-sm" v-if="rawResponse.headers['content-type'].includes('text/html')">
-          <q-expansion-item
-            dense
-            class="q-pb-lg"
-            v-model="htmlExpanded"
-          >
-            <template v-slot:header>
-              <div class="text-h6 q-pl-none">Preview</div>
-            </template>
-            <span class="scroll" v-html="rawResponse.data"></span>
-          </q-expansion-item>
           <pre
             class="bg-grey-2 rounded-borders q-pa-sm scroll"
           ><code>{{ rawResponse.data }}</code></pre>
@@ -393,8 +403,9 @@ export default {
       isPwd: true,
       parameters: [],
       statusIsOk: null,
-      headerExpanded: false,
+      isLoading: false,
       htmlExpanded: false,
+      headerExpanded: false,
       basicAuthExpanded: false,
       requestHeaderExpanded: false,
       options: [
@@ -436,13 +447,6 @@ export default {
     }
   },
   methods: {
-    checkHTTP (value) {
-      let hasHTTP = false
-      if (value.includes('http://') || value.includes('https://')) {
-        hasHTTP = true
-      }
-      return hasHTTP
-    },
     addParameter (payload) {
       this.$store.dispatch('request/addRequestParameterAction', payload.type)
       if ((Object.keys(this.$refs).length === 0) && (payload.type === 'file')) {
@@ -488,17 +492,28 @@ export default {
         ]
       }
     },
+    addHistory () {
+      if ((this.requestURL !== 'http://') && (this.requestURL !== 'https://')) {
+        this.$q.localStorage.set(
+          `history - ${Date.now()}`,
+          this.$store.state.request
+        )
+      }
+    },
     sendRequest () {
       let self = this
-
-      // Validate url field
-      self.$refs.requestURL.validate()
-      if (self.$refs.requestURL.hasError) {
-        self.formHasError = true
-      }
-
       let payload = null
       let params = self.$store.state.request.requestParams
+      self.isLoading = true
+
+      // Set 'https://' as protocol if none if provided
+      if (!self.requestURL.startsWith('http://') && !self.requestURL.startsWith('https://')) {
+        self.$store.dispatch(
+          'request/setRequestURLAction',
+          'https://'.concat(self.requestURL)
+        )
+      }
+
       // Clear $store.state.request.requestResponse
       self.$store.dispatch('request/setRequestResponseAction', {})
 
@@ -529,11 +544,20 @@ export default {
       })
         .then(function (response) {
           self.statusIsOk = true
+          // Add history entry
+          self.addHistory()
           self.$store.dispatch('request/setRequestResponseAction', response)
+          self.isLoading = false
         })
         .catch(function (error) {
           self.statusIsOk = false
+          // Add history entry
+          self.addHistory()
           self.$store.dispatch('request/setRequestResponseAction', error.response)
+          self.isLoading = false
+        })
+        .then(function () {
+          self.isLoading = false
         })
     }
   },
