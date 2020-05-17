@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <!-- Request Section -->
-    <q-card>
+    <q-card square>
       <q-ajax-bar
         position="top"
         color="primary"
@@ -171,6 +171,7 @@
 
     <!-- Request Body Section -->
     <q-card
+      square
       class="q-mt-md"
       v-if="(requestMethod.value !== 'get') && (requestMethod.value !== 'delete')"
     >
@@ -336,7 +337,7 @@
     </q-card>
 
     <!-- Response Section -->
-    <q-card class="q-mt-md" v-if="responseData">
+    <q-card square class="q-mt-md" v-if="responseData">
       <q-card-section class="q-py-sm">
         <div class="text-h6">Response</div>
       </q-card-section>
