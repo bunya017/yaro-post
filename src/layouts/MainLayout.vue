@@ -1,9 +1,9 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated>
-      <q-bar class="q-electron-drag bg-white">
-        <q-icon color="black" name="img:statics/logo/logo-128x128.png" />
-        <div class="text-black">Yaropost</div>
+      <q-bar class="q-electron-drag bg-white text-black">
+        <q-icon name="img:statics/logo/logo-128x128.png" />
+        <div>Yaropost</div>
         <q-space />
         <q-btn-group flat stretch>
           <q-btn
@@ -12,13 +12,11 @@
             class="q-px-sm"
             icon="minimize"
             @click="minimize"
-            text-color="black"
           />
           <q-btn
             flat
             dense
             @click="maximize"
-            text-color="black"
             :icon="showRestoreIcon ? 'filter_none' : 'crop_square'"
             class="rotate-180 q-px-sm"
           />
@@ -28,12 +26,123 @@
             icon="close"
             @click="close"
             class="q-px-sm"
-            text-color="black"
           />
         </q-btn-group>
         <q-resize-observer @resize="isWindowMaximized" />
       </q-bar>
+      <div class="q-pa-xs q-pl-md row items-center bg-white text-black">
+        <div class="cursor-pointer non-selectable" @click="getAllHistory">
+          History
+          <q-menu auto-close square>
+            <q-list dense style="min-width: 250px">
+              <q-item clickable @click="showAllHistoryDialog = true">
+                <q-item-section>
+                  Show All History
+                </q-item-section>
+              </q-item>
+              <q-item clickable @click="clearHistoryDialog = true">
+                <q-item-section>
+                  Clear All History
+                </q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable v-for="(value, index) in historyEntries" :key="index">
+                <q-item-section
+                  @click="$store.dispatch(
+                    'request/restoreHistoryAction',
+                    getHistory(value)
+                  )"
+                >
+                  {{ getHistory(value)['requestMethod'].label }}:
+                  {{ getHistory(value)['requestURL'] }}
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </div>
+      </div>
     </q-header>
+
+    <!-- Clear history confirm dialog -->
+    <q-dialog v-model="clearHistoryDialog" persistent>
+      <q-card>
+        <q-bar class="bg-white">
+          <div>Clear All History</div>
+          <q-space />
+          <q-btn dense flat icon="close" v-close-popup>
+            <q-tooltip>Close</q-tooltip>
+          </q-btn>
+        </q-bar>
+        <q-separator />
+        <q-card-section>
+          Are you sure you want to permanently clear all history records?
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="No" color="primary" v-close-popup />
+          <q-btn flat label="Yes" color="primary" @click="clearAllHistory" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <!-- Show all history dialog -->
+    <q-dialog v-model="showAllHistoryDialog" persistent>
+      <q-card style="width: 600px; max-width: 80vw;">
+        <q-card-section class="q-pa-none">
+          <q-bar class="bg-white">
+            <div>History</div>
+            <q-space />
+            <q-btn dense flat icon="close" v-close-popup>
+              <q-tooltip>Close</q-tooltip>
+            </q-btn>
+          </q-bar>
+        </q-card-section>
+        <q-separator />
+        <q-card-section style="max-height: 60vh;" class="scroll">
+          <q-list dense>
+            <q-item
+              clickable
+              :key="index"
+              v-close-popup
+              @click="$store.dispatch(
+                'request/restoreHistoryAction',
+                getHistory(value)
+              )"
+              v-for="(value, index) in historyEntries"
+            >
+              <q-item-section>
+                {{ getHistory(value)['requestMethod'].label }}:
+                {{ getHistory(value)['requestURL'] }}
+              </q-item-section>
+              <q-item-section side>
+                <q-btn
+                  dense
+                  flat
+                  size="sm"
+                  icon="delete"
+                  color="grey-7"
+                  @click.stop="deleteHistoryitem(value)"
+                />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+        <q-separator />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Close"
+            v-close-popup
+            color="primary"
+          />
+          <q-btn
+            flat
+            color="primary"
+            label="Clear History"
+            @click="clearHistoryDialog = true"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <q-page-container>
       <router-view />
@@ -50,7 +159,10 @@ export default {
   name: 'MainLayout',
   data () {
     return {
-      showRestoreIcon: false
+      historyEntries: [],
+      showRestoreIcon: false,
+      clearHistoryDialog: false,
+      showAllHistoryDialog: false
     }
   },
   methods: {
@@ -79,12 +191,36 @@ export default {
       if (process.env.MODE === 'electron') {
         const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
 
-        if (win.isMaximized()) {
-          this.showRestoreIcon = true
-        } else {
+        if (!win.isMaximized()) {
           this.showRestoreIcon = false
+        } else {
+          this.showRestoreIcon = true
         }
       }
+    },
+    getAllHistory () {
+      let localHistory = this.$q.localStorage.getAll()
+      this.historyEntries = []
+      for (let item in localHistory) {
+        if (item.includes('history')) {
+          this.historyEntries.push({
+            [item]: localHistory[item]
+          })
+        }
+      }
+      return history
+    },
+    getHistory (payload) {
+      let key = Object.keys(payload)[0]
+      return payload[key]
+    },
+    clearAllHistory () {
+      this.$q.localStorage.clear()
+    },
+    deleteHistoryitem (payload) {
+      let key = Object.keys(payload)[0]
+      this.$q.localStorage.remove(key)
+      this.getAllHistory()
     }
   }
 }

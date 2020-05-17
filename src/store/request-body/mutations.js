@@ -95,3 +95,13 @@ export function setBasicAuth (state, payload) {
       break
   }
 }
+
+export function restoreHistory (state, payload) {
+  state.basicAuth = payload['basicAuth']
+  state.requestURL = payload['requestURL']
+  state.requestParams = payload['requestParams']
+  state.requestMethod = payload['requestMethod']
+  state.requestHeaders = payload['requestHeaders']
+  state.requestResponse = payload['requestResponse']
+  state.requestContentType = payload['requestContentType']
+}
