@@ -114,7 +114,14 @@
                 {{ getHistory(value)['requestURL'] }}
               </q-item-section>
               <q-item-section side>
-                <q-btn dense flat size="sm" icon="delete" color="grey-7" />
+                <q-btn
+                  dense
+                  flat
+                  size="sm"
+                  icon="delete"
+                  color="grey-7"
+                  @click.stop="deleteHistoryitem(value)"
+                />
               </q-item-section>
             </q-item>
           </q-list>
@@ -209,6 +216,11 @@ export default {
     },
     clearAllHistory () {
       this.$q.localStorage.clear()
+    },
+    deleteHistoryitem (payload) {
+      let key = Object.keys(payload)[0]
+      this.$q.localStorage.remove(key)
+      this.getAllHistory()
     }
   }
 }
