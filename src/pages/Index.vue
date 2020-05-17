@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <!-- Request Section -->
-    <q-card square>
+    <q-card class="non-selectable" square>
       <q-ajax-bar
         position="top"
         color="primary"
@@ -178,7 +178,7 @@
     <!-- Request Body Section -->
     <q-card
       square
-      class="q-mt-md"
+      class="q-mt-md non-selectable"
       v-if="(requestMethod.value !== 'get') && (requestMethod.value !== 'delete')"
     >
       <q-card-section class="q-py-sm">
@@ -350,12 +350,12 @@
 
     <!-- Response Section -->
     <q-card square class="q-mt-md" v-if="responseData">
-      <q-card-section class="q-py-sm">
+      <q-card-section class="q-py-sm non-selectable">
         <div class="text-h6">Response</div>
       </q-card-section>
       <q-separator />
       <!-- Response Status -->
-      <q-card-section>
+      <q-card-section class="non-selectable">
         <span :class="['text-h3', statusIsOk ? 'text-positive' : 'text-negative' ]">
           {{ rawResponse.status }}
         </span> <span class="grey-8">{{ rawResponse.statusText }}</span>

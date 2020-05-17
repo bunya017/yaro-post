@@ -97,7 +97,7 @@
 
     <!-- Clear history confirm dialog -->
     <q-dialog v-model="clearHistoryDialog" persistent>
-      <q-card square>
+      <q-card class="non-selectable" square>
         <q-bar class="bg-white">
           <q-icon name="warning" />
           <div>Clear All History</div>
@@ -119,10 +119,10 @@
 
     <!-- Show all history dialog -->
     <q-dialog v-model="showAllHistoryDialog" persistent>
-      <q-card square style="width: 600px; max-width: 80vw;">
+      <q-card class="non-selectable" square style="width: 600px; max-width: 80vw;">
         <q-card-section class="q-pa-none">
           <q-bar class="bg-white">
-          <q-icon name="img:statics/logo/logo-128x128.png" />
+          <q-icon class="no-pointer-events" name="img:statics/logo/logo-128x128.png" />
             <div>History</div>
             <q-space />
             <q-btn dense flat icon="close" v-close-popup>
@@ -180,9 +180,9 @@
 
     <!-- About dialog -->
     <q-dialog v-model="aboutDialog" persistent>
-      <q-card square style="min-width: 400px">
+      <q-card class="non-selectable" square style="min-width: 400px">
         <q-bar class="bg-white">
-          <q-icon name="img:statics/logo/logo-128x128.png" />
+          <q-icon class="no-pointer-events" name="img:statics/logo/logo-128x128.png" />
           <div>Yaropost</div>
           <q-space />
           <q-btn dense flat stretch icon="close" v-close-popup>
