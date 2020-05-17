@@ -35,6 +35,11 @@
           History
           <q-menu auto-close square>
             <q-list dense style="min-width: 250px">
+              <q-item clickable @click="showAllHistoryDialog = true">
+                <q-item-section>
+                  Show All History
+                </q-item-section>
+              </q-item>
               <q-item clickable @click="clearHistoryDialog = true">
                 <q-item-section>
                   Clear All History
