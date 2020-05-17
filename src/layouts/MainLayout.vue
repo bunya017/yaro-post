@@ -97,8 +97,9 @@
 
     <!-- Clear history confirm dialog -->
     <q-dialog v-model="clearHistoryDialog" persistent>
-      <q-card>
+      <q-card square>
         <q-bar class="bg-white">
+          <q-icon name="warning" />
           <div>Clear All History</div>
           <q-space />
           <q-btn dense flat icon="close" v-close-popup>
@@ -118,9 +119,10 @@
 
     <!-- Show all history dialog -->
     <q-dialog v-model="showAllHistoryDialog" persistent>
-      <q-card style="width: 600px; max-width: 80vw;">
+      <q-card square style="width: 600px; max-width: 80vw;">
         <q-card-section class="q-pa-none">
           <q-bar class="bg-white">
+          <q-icon name="img:statics/logo/logo-128x128.png" />
             <div>History</div>
             <q-space />
             <q-btn dense flat icon="close" v-close-popup>
