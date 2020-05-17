@@ -271,6 +271,7 @@ export default {
     },
     clearAllHistory () {
       this.$q.localStorage.clear()
+      this.historyEntries = []
     },
     deleteHistoryitem (payload) {
       let key = Object.keys(payload)[0]
