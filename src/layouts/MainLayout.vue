@@ -30,7 +30,19 @@
         </q-btn-group>
         <q-resize-observer @resize="isWindowMaximized" />
       </q-bar>
-      <div class="q-pa-xs q-pl-md row items-center bg-white text-black">
+      <div class="q-pa-xs q-pl-md q-gutter-md row items-center bg-white text-black">
+        <div class="cursor-pointer non-selectable">
+          File
+          <q-menu auto-close square>
+            <q-list dense style="min-width: 150px">
+              <q-item clickable @click="close">
+                <q-item-section>
+                  Quit
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </div>
         <div class="cursor-pointer non-selectable" @click="getAllHistory">
           History
           <q-menu auto-close square>
