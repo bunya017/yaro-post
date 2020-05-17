@@ -31,6 +31,7 @@
         <q-resize-observer @resize="isWindowMaximized" />
       </q-bar>
       <div class="q-pa-xs q-pl-md q-gutter-md row items-center bg-white text-black">
+        <!-- File -->
         <div class="cursor-pointer non-selectable">
           File
           <q-menu auto-close square>
@@ -43,6 +44,7 @@
             </q-list>
           </q-menu>
         </div>
+        <!-- History -->
         <div class="cursor-pointer non-selectable" @click="getAllHistory">
           History
           <q-menu auto-close square>
@@ -67,6 +69,24 @@
                 >
                   {{ getHistory(value)['requestMethod'].label }}:
                   {{ getHistory(value)['requestURL'] }}
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </div>
+        <!-- Help -->
+        <div class="cursor-pointer non-selectable">
+          Help
+          <q-menu auto-close square>
+            <q-list dense style="min-width: 250px">
+              <q-item clickable @click="openLink('https://github.com/bunya017/yaro-post')">
+                <q-item-section>
+                  Github
+                </q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>
+                  About
                 </q-item-section>
               </q-item>
             </q-list>
@@ -166,7 +186,7 @@
 </template>
 
 <script>
-
+import { openURL } from 'quasar'
 export default {
   name: 'MainLayout',
   data () {
@@ -233,6 +253,9 @@ export default {
       let key = Object.keys(payload)[0]
       this.$q.localStorage.remove(key)
       this.getAllHistory()
+    },
+    openLink (link) {
+      return openURL(link)
     }
   }
 }
