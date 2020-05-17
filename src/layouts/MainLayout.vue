@@ -84,6 +84,59 @@
       </q-card>
     </q-dialog>
 
+    <!-- Show all history dialog -->
+    <q-dialog v-model="showAllHistoryDialog" persistent>
+      <q-card style="width: 600px; max-width: 80vw;">
+        <q-card-section class="q-pa-none">
+          <q-bar class="bg-white">
+            <div>History</div>
+            <q-space />
+            <q-btn dense flat icon="close" v-close-popup>
+              <q-tooltip>Close</q-tooltip>
+            </q-btn>
+          </q-bar>
+        </q-card-section>
+        <q-separator />
+        <q-card-section style="max-height: 60vh;" class="scroll">
+          <q-list dense>
+            <q-item
+              clickable
+              :key="index"
+              v-close-popup
+              @click="$store.dispatch(
+                'request/restoreHistoryAction',
+                getHistory(value)
+              )"
+              v-for="(value, index) in historyEntries"
+            >
+              <q-item-section>
+                {{ getHistory(value)['requestMethod'].label }}:
+                {{ getHistory(value)['requestURL'] }}
+              </q-item-section>
+              <q-item-section side>
+                <q-btn dense flat size="sm" icon="delete" color="grey-7" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+        <q-separator />
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Close"
+            v-close-popup
+            color="primary"
+          />
+          <q-btn
+            flat
+            color="primary"
+            label="Clear History"
+            @click="clearHistoryDialog = true"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -101,7 +154,8 @@ export default {
     return {
       historyEntries: [],
       showRestoreIcon: false,
-      clearHistoryDialog: false
+      clearHistoryDialog: false,
+      showAllHistoryDialog: false
     }
   },
   methods: {
