@@ -19,6 +19,7 @@
             <div class="col-3">
               <q-select
                 dense
+                square
                 outlined
                 label="Method"
                 :options="options"
@@ -28,6 +29,7 @@
             <div class="col-8 q-px-md">
               <q-input
                 dense
+                square
                 outlined
                 label="URL"
                 lazy-rules
@@ -63,6 +65,7 @@
             <div class="col-5">
               <q-input
                 dense
+                square
                 outlined
                 type="text"
                 :placeholder="`header ${field.index}`"
@@ -79,6 +82,7 @@
             <div class="col-5">
               <q-input
                 dense
+                square
                 outlined
                 type="text"
                 placeholder="value"
@@ -129,6 +133,7 @@
             <div class="col-4">
               <q-input
                 dense
+                square
                 outlined
                 type="text"
                 label="username"
@@ -144,6 +149,7 @@
             <div class="col-4">
               <q-input
                 dense
+                square
                 outlined
                 label="password"
                 :type="isPwd ? 'password' : 'text'"
@@ -184,6 +190,7 @@
         <div class="col-6 q-mx-auto">
           <q-select
             dense
+            square
             outlined
             label="Content Type"
             :options="contentTypeOptions"
@@ -201,6 +208,7 @@
           <div class="col-5">
             <q-input
               dense
+              square
               outlined
               type="text"
               placeholder="parameter name"
@@ -217,6 +225,7 @@
           <div class="col-5" v-if="field.type === 'text'">
             <q-input
               dense
+              square
               outlined
               type="text"
               placeholder="value"
@@ -231,6 +240,9 @@
             />
           </div>
           <q-uploader
+            flat
+            square
+            bordered
             multiple
             class="col-5"
             color="white"
