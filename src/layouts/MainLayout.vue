@@ -131,7 +131,7 @@
           </q-bar>
         </q-card-section>
         <q-separator />
-        <q-card-section style="max-height: 60vh;" class="scroll">
+        <q-card-section style="min-height: 35vh; max-height: 60vh;" class="scroll">
           <q-list dense>
             <q-item
               clickable
